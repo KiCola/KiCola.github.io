@@ -1,13 +1,13 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>深度学习实战笔记-1-Pytorch详解 | In Zero's World</title><meta name="author" content="Zero"><meta name="copyright" content="Zero"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="深度学习实战笔记 推荐资料↓ 项目文件预览 - PyTorch中文文档-API查询与使用:PyTorch中文文档 - API查询与使用欢迎来到PyTorch中文文档资源页面！本资源为您提供了一份详尽的《pytorch中文文档-API查询与使用.pdf》，这是每一个PyTorch开发者不可或缺的学习和参考资料 - GitCode  Pytorch 详解通识 PyTorch 是一种开源深度学习框架，以">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>深度学习实战笔记-1-Pytorch详解 | In Zero's World</title><meta name="author" content="Zero"><meta name="copyright" content="Zero"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="深度学习实战笔记  推荐资料↓ 项目文件预览 - PyTorch中文文档-API查询与使用:PyTorch中文文档 - API查询与使用欢迎来到PyTorch中文文档资源页面！本资源为您提供了一份详尽的《pytorch中文文档-API查询与使用.pdf》，这是每一个PyTorch开发者不可或缺的学习和参考资料 - GitCode  Pytorch 详解 通识  PyTorch">
 <meta property="og:type" content="article">
 <meta property="og:title" content="深度学习实战笔记-1-Pytorch详解">
 <meta property="og:url" content="http://inzeroworld.com.cn/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/index.html">
 <meta property="og:site_name" content="In Zero&#39;s World">
-<meta property="og:description" content="深度学习实战笔记 推荐资料↓ 项目文件预览 - PyTorch中文文档-API查询与使用:PyTorch中文文档 - API查询与使用欢迎来到PyTorch中文文档资源页面！本资源为您提供了一份详尽的《pytorch中文文档-API查询与使用.pdf》，这是每一个PyTorch开发者不可或缺的学习和参考资料 - GitCode  Pytorch 详解通识 PyTorch 是一种开源深度学习框架，以">
+<meta property="og:description" content="深度学习实战笔记  推荐资料↓ 项目文件预览 - PyTorch中文文档-API查询与使用:PyTorch中文文档 - API查询与使用欢迎来到PyTorch中文文档资源页面！本资源为您提供了一份详尽的《pytorch中文文档-API查询与使用.pdf》，这是每一个PyTorch开发者不可或缺的学习和参考资料 - GitCode  Pytorch 详解 通识  PyTorch">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://s2.loli.net/2024/01/01/2UupRJhBag9Zqo6.jpg">
 <meta property="article:published_time" content="2025-01-19T11:51:56.000Z">
-<meta property="article:modified_time" content="2025-01-20T08:08:25.725Z">
+<meta property="article:modified_time" content="2025-01-20T08:40:05.811Z">
 <meta property="article:author" content="Zero">
 <meta property="article:tag" content="DeepLearn">
 <meta name="twitter:card" content="summary">
@@ -56,7 +56,7 @@
   isHome: false,
   isHighlightShrink: false,
   isToc: true,
-  postUpdate: '2025-01-20 16:08:25'
+  postUpdate: '2025-01-20 16:40:05'
 }</script><script>(win=>{
       win.saveToLocal = {
         set: (key, value, ttl) => {
@@ -153,357 +153,514 @@
         }
       }
       detectApple()
-    })(window)</script><meta name="generator" content="Hexo 7.0.0"><link href="https://cdn.bootcss.com/KaTeX/0.11.1/katex.min.css" rel="stylesheet" /></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s2.loli.net/2024/03/06/DdFmuoWIlGbg6fU.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">60</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">11</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/photo/"><i class="fa-fw fa fa-file-photo-o"></i><span> Photo</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li><li><a class="site-page child" href="/animations/"><i class="fa-fw fas fa-film"></i><span> Animation</span></a></li><li><a class="site-page child" href="/games/"><i class="fa-fw fas fa-gamepad"></i><span> Game</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s2.loli.net/2024/01/01/2UupRJhBag9Zqo6.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="In Zero's World"><img class="site-icon" src="https://cdn.pixabay.com/photo/2017/03/08/14/20/flat-2126879_960_720.png"/><span class="site-name">In Zero's World</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/photo/"><i class="fa-fw fa fa-file-photo-o"></i><span> Photo</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li><li><a class="site-page child" href="/animations/"><i class="fa-fw fas fa-film"></i><span> Animation</span></a></li><li><a class="site-page child" href="/games/"><i class="fa-fw fas fa-gamepad"></i><span> Game</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">深度学习实战笔记-1-Pytorch详解</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-01-19T11:51:56.000Z" title="发表于 2025-01-19 19:51:56">2025-01-19</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-01-20T08:08:25.725Z" title="更新于 2025-01-20 16:08:25">2025-01-20</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/AI/">AI</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="深度学习实战笔记-1-Pytorch详解"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="深度学习实战笔记"><a href="#深度学习实战笔记" class="headerlink" title="深度学习实战笔记"></a>深度学习实战笔记</h1><blockquote>
+    })(window)</script><meta name="generator" content="Hexo 7.0.0"><link href="https://cdn.bootcss.com/KaTeX/0.11.1/katex.min.css" rel="stylesheet" /></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s2.loli.net/2024/03/06/DdFmuoWIlGbg6fU.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">60</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">11</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/photo/"><i class="fa-fw fa fa-file-photo-o"></i><span> Photo</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li><li><a class="site-page child" href="/animations/"><i class="fa-fw fas fa-film"></i><span> Animation</span></a></li><li><a class="site-page child" href="/games/"><i class="fa-fw fas fa-gamepad"></i><span> Game</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s2.loli.net/2024/01/01/2UupRJhBag9Zqo6.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="In Zero's World"><img class="site-icon" src="https://cdn.pixabay.com/photo/2017/03/08/14/20/flat-2126879_960_720.png"/><span class="site-name">In Zero's World</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/photo/"><i class="fa-fw fa fa-file-photo-o"></i><span> Photo</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li><li><a class="site-page child" href="/animations/"><i class="fa-fw fas fa-film"></i><span> Animation</span></a></li><li><a class="site-page child" href="/games/"><i class="fa-fw fas fa-gamepad"></i><span> Game</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">深度学习实战笔记-1-Pytorch详解</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-01-19T11:51:56.000Z" title="发表于 2025-01-19 19:51:56">2025-01-19</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-01-20T08:40:05.811Z" title="更新于 2025-01-20 16:40:05">2025-01-20</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/AI/">AI</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="深度学习实战笔记-1-Pytorch详解"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="深度学习实战笔记">深度学习实战笔记</h1>
+<blockquote>
 <p>推荐资料↓</p>
-<p><a target="_blank" rel="noopener" href="https://gitcode.com/Open-source-documentation-tutorial/f78f7/blob/main/pytorch中文文档-API查询与使用.pdf">项目文件预览 - PyTorch中文文档-API查询与使用:PyTorch中文文档 - API查询与使用欢迎来到PyTorch中文文档资源页面！本资源为您提供了一份详尽的《pytorch中文文档-API查询与使用.pdf》，这是每一个PyTorch开发者不可或缺的学习和参考资料 - GitCode</a></p>
+<p><a
+target="_blank" rel="noopener" href="https://gitcode.com/Open-source-documentation-tutorial/f78f7/blob/main/pytorch中文文档-API查询与使用.pdf">项目文件预览
+- PyTorch中文文档-API查询与使用:PyTorch中文文档 -
+API查询与使用欢迎来到PyTorch中文文档资源页面！本资源为您提供了一份详尽的《pytorch中文文档-API查询与使用.pdf》，这是每一个PyTorch开发者不可或缺的学习和参考资料
+- GitCode</a></p>
 </blockquote>
-<h2 id="Pytorch-详解"><a href="#Pytorch-详解" class="headerlink" title="Pytorch 详解"></a>Pytorch 详解</h2><h3 id="通识"><a href="#通识" class="headerlink" title="通识"></a>通识</h3><blockquote>
-<p>PyTorch 是一种开源深度学习框架，以出色的灵活性和易用性著称。这在一定程度上是因为与机器学习开发者和数据科学家所青睐的热门 Python 高级编程语言兼容。</p>
+<h2 id="pytorch-详解">Pytorch 详解</h2>
+<h3 id="通识">通识</h3>
+<blockquote>
+<p>PyTorch
+是一种开源深度学习框架，以出色的灵活性和易用性著称。这在一定程度上是因为与机器学习开发者和数据科学家所青睐的热门
+Python 高级编程语言兼容。</p>
 </blockquote>
-<p>pytorch 可以理解为是一个可以支持在GPU上进行数学计算的更高级的numpy库</p>
-<p>它完全支持 GPU，并且使用<strong>反向模式自动微分技术BP</strong>，因此可以动态修改计算图形。这使其成为快速实验和原型设计的常用选择。</p>
+<p>pytorch
+可以理解为是一个可以支持在GPU上进行数学计算的更高级的numpy库</p>
+<p>它完全支持
+GPU，并且使用<strong>反向模式自动微分技术BP</strong>，因此可以动态修改计算图形。这使其成为快速实验和原型设计的常用选择。</p>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/v2-33c2659ec488de2ca46f3bfd7e6a7f77_1440w.jpg" class="" title="img">
-<p>PyTorch 是 Facebook AI Research 和其他几个实验室的开发者的工作成果</p>
+<p>PyTorch 是 Facebook AI Research
+和其他几个实验室的开发者的工作成果</p>
 <p>PyTorch 采用了 Chainer 创新技术，称为反向模式自动微分</p>
 <p>从本质上讲，它就像一台磁带录音机，录制完成的操作，然后回放，计算梯度</p>
-<h3 id="核心组件"><a href="#核心组件" class="headerlink" title="核心组件"></a>核心组件</h3><h4 id="张量"><a href="#张量" class="headerlink" title="张量"></a>张量</h4><p>张量是一种核心 PyTorch 数据类型，类似于<strong>多维数组</strong>，用于<strong>存储和操作模型的输入和输出以及模型的参数</strong></p>
-<p>张量与 NumPy 的 <strong>ndarray</strong> 类似，只是张量可以在 GPU 上运行以加速计算</p>
-<h4 id="图形"><a href="#图形" class="headerlink" title="图形"></a>图形</h4><p>神经网络将一系列嵌套函数应用于输入参数，以转换输入数据。</p>
-<p>深度学习的目标是通过计算<strong>相对损失指标</strong>的<strong>偏导数</strong>（梯度），优化这些参数（包括权重和偏差，在 PyTorch 中以张量的形式存储）</p>
+<h3 id="核心组件">核心组件</h3>
+<h4 id="张量">张量</h4>
+<p>张量是一种核心 PyTorch
+数据类型，类似于<strong>多维数组</strong>，用于<strong>存储和操作模型的输入和输出以及模型的参数</strong></p>
+<p>张量与 NumPy 的 <strong>ndarray</strong> 类似，只是张量可以在 GPU
+上运行以加速计算</p>
+<p>#### 图形</p>
+<p>神经网络将一系列嵌套函数应用于输入参数，以转换输入数据。</p>
+<p>深度学习的目标是通过计算<strong>相对损失指标</strong>的<strong>偏导数</strong>（梯度），优化这些参数（包括权重和偏差，在
+PyTorch 中以张量的形式存储）</p>
 <p>在前向传播中，神经网络接受输入参数，并向下一层的节点输出置信度分数，直至到达输出层，在该层计算分数误差</p>
 <p>在一个称为<strong>梯度下降</strong>的过程中，通过<strong>反向传播</strong>，误差会再次通过网络发送回来，并<strong>调整权重</strong>，从而改进模型</p>
 <p><strong>图形</strong>是由已连接节点（称为顶点）和边缘组成的数据结构。每个现代深度学习框架都基于图形的概念，其中神经网络表示为计算的图形结构。</p>
-<p>PyTorch 在由函数对象组成的<strong>有向无环图 (DAG)</strong> 中保存张量和执行操作的记录。在以下 DAG 中，叶是输入张量，根是输出张量。</p>
+<p>PyTorch 在由函数对象组成的<strong>有向无环图 (DAG)</strong>
+中保存张量和执行操作的记录。在以下 DAG
+中，叶是输入张量，根是输出张量。</p>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/v2-6fcc322b4b9c73a5ae0218b668e1f060_1440w.jpg" class="" title="img">
-<p>在许多热门框架（包括 TensorFlow）中，计算图形是一个静态对象。<strong>PyTorch 基于动态计算图形</strong>，即，在<strong>运行时构建和重建计算图形</strong>，并使用与执行前向传递的计算相同的代码，同时还创建反向传播所需的数据结构。PyTorch 是首个运行时定义深度学习框架，与 TensorFlow 等静态图形框架的功能和性能相匹配，非常适合从标准卷积网络到时间递归神经网络等所有网络。</p>
-<h3 id="库文件"><a href="#库文件" class="headerlink" title="库文件"></a>库文件</h3><img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250119195842197.png" class="" title="image-20250119195842197">
-<h4 id="torch"><a href="#torch" class="headerlink" title="torch"></a>torch</h4><h5 id="Tensor"><a href="#Tensor" class="headerlink" title="Tensor"></a>Tensor</h5><ol>
-<li><code>torch.is_tensor(obj)</code>：如果参数obj 是一个PyTorch 张量，则返回True。</li>
-<li><code>torch.is_storage(obj)</code>：如果obj 是一个PyTorch storage 对象，则返回True。</li>
-<li><code>torch.set_default_tensor_type(t)</code>：设置当前tensor 的默认数据类型。</li>
+<p>在许多热门框架（包括
+TensorFlow）中，计算图形是一个静态对象。<strong>PyTorch
+基于动态计算图形</strong>，即，在<strong>运行时构建和重建计算图形</strong>，并使用与执行前向传递的计算相同的代码，同时还创建反向传播所需的数据结构。PyTorch
+是首个运行时定义深度学习框架，与 TensorFlow
+等静态图形框架的功能和性能相匹配，非常适合从标准卷积网络到时间递归神经网络等所有网络。</p>
+<h3 id="库文件">库文件</h3>
+<img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250119195842197.png" class="" title="image-20250119195842197">
+<h4 id="torch">torch</h4>
+<h5 id="tensor">Tensor</h5>
+<ol type="1">
+<li><code>torch.is_tensor(obj)</code>：如果参数obj 是一个PyTorch
+张量，则返回True。</li>
+<li><code>torch.is_storage(obj)</code>：如果obj 是一个PyTorch storage
+对象，则返回True。</li>
+<li><code>torch.set_default_tensor_type(t)</code>：设置当前tensor
+的默认数据类型。</li>
 </ol>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>torch.tensor([<span class="number">1.2</span>, <span class="number">3</span>]).dtype <span class="comment"># initial default for floating point is torch.float32</span></span><br><span class="line">torch.float32</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>torch.set_default_tensor_type(torch.DoubleTensor)</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>torch.tensor([<span class="number">1.2</span>, <span class="number">3</span>]).dtype <span class="comment"># a new floating point tensor</span></span><br><span class="line">torch.float64</span><br></pre></td></tr></table></figure>
-<ol>
-<li><code>torch.numel(input)-&gt;int</code>：返回input 张量中的元素个数。<br>input (Tensor)：输入张量</li>
+<ol start="4" type="1">
+<li><code>torch.numel(input)-&gt;int</code>：返回input
+张量中的元素个数。 input (Tensor)：输入张量</li>
 </ol>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = torch.randn(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>torch.numel(a)</span><br><span class="line"><span class="number">120</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = torch.zeros(<span class="number">4</span>,<span class="number">4</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>torch.numel(a)</span><br><span class="line"><span class="number">16</span></span><br></pre></td></tr></table></figure>
-<ol>
+<ol start="5" type="1">
 <li><code>torch.set_printoptions(precision=None, threshold=None, edgeitems=None, linewidth=None, profile=None)&#125;</code></li>
 </ol>
-<p>设置打印选项。完全参考自Numpy。<br>参数：<br>– precision：浮点数输出的精度位数(默认为8 )<br>– threshold：阈值，触发汇总显示而不是完全显示(repr) 的数组元素的总数（默认<br>为1000）<br>– edgeitems：汇总显示中，每维（轴）两端显示的项数（默认值为3）<br>– linewidth：用于插入行间隔的每行字符数（默认为80）。Thresholded matricies<br>will ignore this parameter.<br>– profile：pretty 打印的完全默认值。可以覆盖上述所有选项(默认为short, full)</p>
-<h5 id="创建操作"><a href="#创建操作" class="headerlink" title="创建操作"></a>创建操作</h5><ol>
+<p>设置打印选项。完全参考自Numpy。 参数： –
+precision：浮点数输出的精度位数(默认为8 ) –
+threshold：阈值，触发汇总显示而不是完全显示(repr) 的数组元素的总数（默认
+为1000） – edgeitems：汇总显示中，每维（轴）两端显示的项数（默认值为3）
+– linewidth：用于插入行间隔的每行字符数（默认为80）。Thresholded
+matricies will ignore this parameter. – profile：pretty
+打印的完全默认值。可以覆盖上述所有选项(默认为short, full)</p>
+<h5 id="创建操作">创建操作</h5>
+<ol start="6" type="1">
 <li><code>torch.eye(n)</code></li>
 </ol>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250119211116881.png" class="" title="image-20250119211116881">
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>torch.eye(<span class="number">3</span>)</span><br><span class="line"><span class="number">1</span> <span class="number">0</span> <span class="number">0</span></span><br><span class="line"><span class="number">0</span> <span class="number">1</span> <span class="number">0</span></span><br><span class="line"><span class="number">0</span> <span class="number">0</span> <span class="number">1</span></span><br><span class="line">[torch.FloatTensor of size 3x3]</span><br></pre></td></tr></table></figure>
-<ol>
+<ol start="7" type="1">
 <li><code>torch.from_numpy(ndarray) -&gt; Tensor</code></li>
 </ol>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250119211313098.png" class="" title="image-20250119211313098">
-<ol>
+<ol start="8" type="1">
 <li><code>torch.linspace(start, end, steps=100, out=None) -&gt; Tensor</code></li>
 </ol>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250119211406030.png" class="" title="image-20250119211406030">
-<ol>
+<ol start="9" type="1">
 <li><code>torch.logspace(start, end, steps=100, out=None) -&gt; Tensor</code></li>
 </ol>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250119211458702.png" class="" title="image-20250119211458702">
-<ol>
+<ol start="10" type="1">
 <li><code>torch.ones(*sizes, out=None)</code></li>
 </ol>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250119211537428.png" class="" title="image-20250119211537428">
-<ol>
+<ol start="11" type="1">
 <li><code>torch.rand(*sizes, out=None) -&gt; Tensor</code></li>
 </ol>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250119211746596.png" class="" title="image-20250119211746596">
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250119211755444.png" class="" title="image-20250119211755444">
-<ol>
+<ol start="12" type="1">
 <li><code>torch.randn(*sizes, out=None) -&gt; Tensor</code></li>
 </ol>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250119211856655.png" class="" title="image-20250119211856655">
-<ol>
+<ol start="13" type="1">
 <li><code>torch.randperm(n, out=None) -&gt; LongTensor</code></li>
 </ol>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250119211937154.png" class="" title="image-20250119211937154">
-<ol>
+<ol start="14" type="1">
 <li><code>torch.arange(start, end, step=1, out=None) -&gt; Tensor</code></li>
 </ol>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250119212558850.png" class="" title="image-20250119212558850">
-<ol>
+<ol start="15" type="1">
 <li><code>torch.range(start, end, step=1, out=None) -&gt; Tensor</code></li>
 </ol>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250119212712555.png" class="" title="image-20250119212712555">
-<ol>
+<ol start="16" type="1">
 <li><code>torch.zeros(*sizes, out=None) -&gt; Tensor</code></li>
 </ol>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250119212938490.png" class="" title="image-20250119212938490">
-<h5 id="索引，切片，连接，换位"><a href="#索引，切片，连接，换位" class="headerlink" title="索引，切片，连接，换位"></a>索引，切片，连接，换位</h5><ol>
+<h5 id="索引切片连接换位">索引，切片，连接，换位</h5>
+<ol start="17" type="1">
 <li><code>torch.cat(inputs, dimension=0) -&gt; Tensor</code></li>
 </ol>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250119213047989.png" class="" title="image-20250119213047989">
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250119213054892.png" class="" title="image-20250119213054892">
-<ol>
+<ol start="18" type="1">
 <li><code>torch.chunk(tensor, chunks, dim=0)</code></li>
 </ol>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250119213229460.png" class="" title="image-20250119213229460">
-<ol>
+<ol start="19" type="1">
 <li><code>torch.gather(input, dim, index, out=None) -&gt; Tensor</code></li>
 </ol>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250119213329463.png" class="" title="image-20250119213329463">
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250119213350262.png" class="" title="image-20250119213350262">
-<ol>
+<ol start="20" type="1">
 <li><code>torch.index_select(input, dim, index, out=None) -&gt; Tensor</code></li>
 </ol>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250119214420176.png" class="" title="image-20250119214420176">
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250119214426952.png" class="" title="image-20250119214426952">
-<ol>
+<ol start="21" type="1">
 <li><code>torch.masked_select(input, mask, out=None) -&gt; Tensor</code></li>
 </ol>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250119214819292.png" class="" title="image-20250119214819292">
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?????? 出现bug 待搜资料补充</span><br></pre></td></tr></table></figure>
-<ol>
+<ol start="22" type="1">
 <li><code>torch.nonzero(input, out=None) -&gt; LongTensor</code></li>
 </ol>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250119220138638.png" class="" title="image-20250119220138638">
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250119220145128.png" class="" title="image-20250119220145128">
-<ol>
+<ol start="23" type="1">
 <li><code>torch.split(tensor, split_size, dim=0)</code></li>
 </ol>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250119220605944.png" class="" title="image-20250119220605944">
-<ol>
+<ol start="24" type="1">
 <li><code>torch.squeeze(input, dim=None, out=None)</code></li>
 </ol>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250119220818998.png" class="" title="image-20250119220818998">
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250119221738240.png" class="" title="image-20250119221738240">
-<ol>
+<ol start="25" type="1">
 <li><code>torch.stack(squence, dim=0)</code></li>
 </ol>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250119221815844.png" class="" title="image-20250119221815844">
-<ol>
+<ol start="26" type="1">
 <li><code>torch.t(input, out=None) -&gt; Tensor</code></li>
 </ol>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250119222957241.png" class="" title="image-20250119222957241">
-<ol>
+<ol start="27" type="1">
 <li><code>torch.transpose(input, dim0, dim1, out=None) -&gt; Tensor</code></li>
 </ol>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250119223036959.png" class="" title="image-20250119223036959">
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250119223043138.png" class="" title="image-20250119223043138">
-<ol>
+<ol start="28" type="1">
 <li><code>torch.unbind(tensor,dim=0)</code></li>
 </ol>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250119223926545.png" class="" title="image-20250119223926545">
-<ol>
+<ol start="29" type="1">
 <li><code>torch.unsqueeze(input, dim, out=None)</code></li>
 </ol>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250119224101380.png" class="" title="image-20250119224101380">
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250119224106559.png" class="" title="image-20250119224106559">
-<h5 id="随机抽样"><a href="#随机抽样" class="headerlink" title="随机抽样"></a>随机抽样</h5><ol>
-<li><code>torch.manual_seed(seed)</code> 设定生成随机数的种子，并返回一个torch._C.Generator对象<br>参数：seed (int or long)：种子._</li>
-<li><code>torch.initial_seed()</code><br>返回生成随机数的原始种子值（python long）</li>
-<li><code>torch.get_rng_state()</code><br>返回随机生成器状态(ByteTensor)</li>
-<li><code>torch.set_rng_state(new_state)</code>设定随机生成器状态。<br>参数：new_state (torch.ByteTensor)：期望的状态。</li>
-<li><code>torch.default_generator = &lt;torch._C.Generator object&gt;</code></li>
-</ol>
-<ol>
-<li><code>torch.bernoulli(input, out=None)</code></li>
+<h5 id="随机抽样">随机抽样</h5>
+<ol start="30" type="1">
+<li><p><code>torch.manual_seed(seed)</code>
+设定生成随机数的种子，并返回一个torch._C.Generator对象 参数：seed (int
+or long)：种子._</p></li>
+<li><p><code>torch.initial_seed()</code>
+返回生成随机数的原始种子值（python long）</p></li>
+<li><p><code>torch.get_rng_state()</code>
+返回随机生成器状态(ByteTensor)</p></li>
+<li><p><code>torch.set_rng_state(new_state)</code>设定随机生成器状态。
+参数：new_state (torch.ByteTensor)：期望的状态。</p></li>
+<li><p><code>torch.default_generator = &lt;torch._C.Generator object&gt;</code></p></li>
+<li><p><code>torch.bernoulli(input, out=None)</code></p></li>
 </ol>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120111838247.png" class="" title="image-20250120111838247">
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120111847950.png" class="" title="image-20250120111847950">
-<ol>
+<ol start="36" type="1">
 <li><code>torch.multinomial(input, num_samples, replacement=False, out=None) -&gt; LongTensor</code></li>
 </ol>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120112429964.png" class="" title="image-20250120112429964">
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120112441029.png" class="" title="image-20250120112441029">
-<ol>
+<ol start="37" type="1">
 <li><code>torch.normal(means, std, out=None)</code></li>
 </ol>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120113430143.png" class="" title="image-20250120113430143">
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120113447700.png" class="" title="image-20250120113447700">
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120113554039.png" class="" title="image-20250120113554039">
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120113602286.png" class="" title="image-20250120113602286">
-<h5 id="序列化"><a href="#序列化" class="headerlink" title="序列化"></a>序列化</h5><ol>
-<li><code>torch.save(obj, f, pickle_module=&lt;module &#39;pickle&#39; from
-&#39;/home/jenkins/miniconda/lib/python3.5/pickle.py&#39;&gt;,
-pickle_protocol=2)</code></li>
+<h5 id="序列化">序列化</h5>
+<ol start="38" type="1">
+<li><code>torch.save(obj, f, pickle_module=&lt;module 'pickle' from     '/home/jenkins/miniconda/lib/python3.5/pickle.py'&gt;,     pickle_protocol=2)</code></li>
 </ol>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120113931779.png" class="" title="image-20250120113931779">
-<ol>
-<li><code>torch.load(f, map_location=None, pickle_module=&lt;module
-&#39;pickle&#39; from
-&#39;/home/jenkins/miniconda/lib/python3.5/pickle.py&#39;&gt;)</code></li>
+<ol start="39" type="1">
+<li><code>torch.load(f, map_location=None, pickle_module=&lt;module     'pickle' from     '/home/jenkins/miniconda/lib/python3.5/pickle.py'&gt;)</code></li>
 </ol>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120113952244.png" class="" title="image-20250120113952244">
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120114004748.png" class="" title="image-20250120114004748">
-<h5 id="并行化"><a href="#并行化" class="headerlink" title="并行化"></a>并行化</h5><ol>
+<h5 id="并行化">并行化</h5>
+<ol start="40" type="1">
 <li><code>torch.get_num_threads()  -&gt; int</code></li>
 <li><code>torch.set_num_threads(int)</code></li>
 </ol>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120114135073.png" class="" title="image-20250120114135073">
-<h5 id="数学操作"><a href="#数学操作" class="headerlink" title="数学操作"></a>数学操作</h5><h6 id="按点操作"><a href="#按点操作" class="headerlink" title="按点操作"></a>按点操作</h6><ol>
+<h5 id="数学操作">数学操作</h5>
+<h6 id="按点操作">按点操作</h6>
+<ol start="42" type="1">
 <li><code>torch.abs(input, out=None) -&gt; Tensor</code></li>
 </ol>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120115559780.png" class="" title="image-20250120115559780">
-<ol>
+<ol start="43" type="1">
 <li><code>torch.acos(input, out=None) -&gt; Tensor</code></li>
 </ol>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120115637732.png" class="" title="image-20250120115637732">
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120115646421.png" class="" title="image-20250120115646421">
-<ol>
+<ol start="44" type="1">
 <li><code>torch.add(input, value, out=None)</code></li>
 </ol>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120115719226.png" class="" title="image-20250120115719226">
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120115725722.png" class="" title="image-20250120115725722">
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120115738832.png" class="" title="image-20250120115738832">
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120115752025.png" class="" title="image-20250120115752025">
-<ol>
+<ol start="45" type="1">
 <li><code>torch.addcdiv(tensor, value=1, tensor1, tensor2, out=None) -&gt; Tensor</code></li>
 </ol>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120120320711.png" class="" title="image-20250120120320711">
-<ol>
+<ol start="46" type="1">
 <li><code>torch.addcmul(tensor, value=1, tensor1, tensor2, out=None) -&gt; Tensor</code></li>
 </ol>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120120634840.png" class="" title="image-20250120120634840">
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120120646091.png" class="" title="image-20250120120646091">
-<ol>
+<ol start="47" type="1">
 <li><code>torch.asin(input, out=None) -&gt; Tensor</code></li>
 </ol>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120121405143.png" class="" title="image-20250120121405143">
-<ol>
+<ol start="48" type="1">
 <li><code>torch.atan(input, out=None) -&gt; Tensor</code></li>
 </ol>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120121644397.png" class="" title="image-20250120121644397">
-<ol>
+<ol start="49" type="1">
 <li><code>torch.atan2(input1, input2, out=None) -&gt; Tensor</code></li>
 </ol>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120121732610.png" class="" title="image-20250120121732610">
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120121737786.png" class="" title="image-20250120121737786">
-<ol>
+<ol start="50" type="1">
 <li><code>torch.ceil(input, out=None) -&gt; Tensor</code></li>
 </ol>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120153258594.png" class="" title="image-20250120153258594">
-<ol>
+<ol start="51" type="1">
 <li><code>torch.clamp(input, min, max, out=None) -&gt; Tensor</code><img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120153439499.png" class="" title="image-20250120153439499"></li>
 </ol>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120153513643.png" class="" title="image-20250120153513643">
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120153523616.png" class="" title="image-20250120153523616">
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120153531499.png" class="" title="image-20250120153531499">
-<ol>
+<ol start="52" type="1">
 <li><code>torch.cos(input, out=None) -&gt; Tensor</code></li>
 </ol>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120154005759.png" class="" title="image-20250120154005759">
-<ol>
+<ol start="53" type="1">
 <li><code>torch.cosh(input, out=None) -&gt; Tensor</code></li>
 </ol>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120154043529.png" class="" title="image-20250120154043529">
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120154050738.png" class="" title="image-20250120154050738">
-<ol>
+<ol start="54" type="1">
 <li><code>torch.div(input, value, out=None) -&gt; Tensor</code></li>
 </ol>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120154353565.png" class="" title="image-20250120154353565">
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120154414872.png" class="" title="image-20250120154414872">
-<ol>
+<ol start="55" type="1">
 <li><code>torch.exp(tensor, out=None) -&gt; Tensor</code></li>
 </ol>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120154440717.png" class="" title="image-20250120154440717">
-<ol>
+<ol start="56" type="1">
 <li><code>torch.floor(input, out=None) -&gt; Tensor</code></li>
 </ol>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120154504692.png" class="" title="image-20250120154504692">
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120154511803.png" class="" title="image-20250120154511803">
-<ol>
+<ol start="57" type="1">
 <li><code>torch.fmod(input, divisor, out=None)</code></li>
 </ol>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120154541766.png" class="" title="image-20250120154541766">
-<ol>
+<ol start="58" type="1">
 <li><code>torch.frac(tensor, out=None) -&gt; tensor</code></li>
 </ol>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120154627323.png" class="" title="image-20250120154627323">
-<ol>
+<ol start="59" type="1">
 <li><code>torch.lerp(start, end, weight, out=None)</code></li>
 </ol>
-<p><img src="深度学习实战-1-Pytorch通识/image-20250120154714707.png" alt="image-20250120154714707"><img src="深度学习实战-1-Pytorch通识/image-20250120154722505.png" alt="image-20250120154722505"></p>
-<ol>
+<p><img src="深度学习实战-1-Pytorch通识/image-20250120154714707.png"
+alt="image-20250120154714707" /><img
+src="深度学习实战-1-Pytorch通识/image-20250120154722505.png"
+alt="image-20250120154722505" /></p>
+<ol start="60" type="1">
 <li><code>torch.log(input, out=None) -&gt; Tensor</code></li>
 </ol>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120154749185.png" class="" title="image-20250120154749185">
-<ol>
+<ol start="61" type="1">
 <li><code>torch.loglp(input, out=None) -&gt; Tensor</code></li>
 </ol>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120154830097.png" class="" title="image-20250120154830097">
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120154855120.png" class="" title="image-20250120154855120">
-<ol>
+<ol start="62" type="1">
 <li><code>torch.mul(input, value, out=None)</code></li>
 </ol>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120154925759.png" class="" title="image-20250120154925759">
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120154931313.png" class="" title="image-20250120154931313">
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120154947634.png" class="" title="image-20250120154947634">
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120154953189.png" class="" title="image-20250120154953189">
-<ol>
+<ol start="63" type="1">
 <li><code>torch.neg(input, out=None) -&gt; Tensor</code></li>
 </ol>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120155028671.png" class="" title="image-20250120155028671">
-<ol>
+<ol start="64" type="1">
 <li><code>torch.pow(input, exponent, out=None) -&gt; tensor</code></li>
 </ol>
-<img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120155817499.png" class="" title="image-20250120155817499">s
-
+<img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120155817499.png" class="" title="image-20250120155817499">
+<p>s</p>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120155827090.png" class="" title="image-20250120155827090">
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120155849794.png" class="" title="image-20250120155849794">
-<ol>
+<ol start="65" type="1">
 <li><code>torch.reciprocal(input, out=None) -&gt; Tensor</code></li>
 </ol>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120155920881.png" class="" title="image-20250120155920881">
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120155928307.png" class="" title="image-20250120155928307">
-<ol>
+<ol start="66" type="1">
 <li><code>torch.remainder(input, divisor, out=None) -&gt; Tensor</code></li>
 </ol>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120160011109.png" class="" title="image-20250120160011109">
-<ol>
+<ol start="67" type="1">
 <li><code>torch.round(input, out=None) -&gt; Tensor</code></li>
 </ol>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120160035912.png" class="" title="image-20250120160035912">
-<ol>
+<ol start="68" type="1">
 <li><code>torch.rsqrt(input, out=None) -&gt; tensor</code></li>
 </ol>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120160103347.png" class="" title="image-20250120160103347">
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120160109313.png" class="" title="image-20250120160109313">
-<ol>
+<ol start="69" type="1">
 <li><code>torch,sigmoid(input, out=None) -&gt; tensor</code></li>
 </ol>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120160137019.png" class="" title="image-20250120160137019">
-<ol>
+<ol start="70" type="1">
 <li><code>torch.sign(input, out=None) -&gt; tensor</code></li>
 </ol>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120160156161.png" class="" title="image-20250120160156161">
-<ol>
+<ol start="71" type="1">
 <li><code>torch.sin(input, out=None) -&gt; tensor</code></li>
 </ol>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120160215674.png" class="" title="image-20250120160215674">
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120160222628.png" class="" title="image-20250120160222628">
-<ol>
+<ol start="72" type="1">
 <li><code>torch.sinh(input, out=None) -&gt; tensor</code></li>
 </ol>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120160243563.png" class="" title="image-20250120160243563">
-<ol>
+<ol start="73" type="1">
 <li><code>torch.sqrt(input, out=None) -&gt; tensor</code></li>
 </ol>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120160304809.png" class="" title="image-20250120160304809">
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120160310455.png" class="" title="image-20250120160310455">
-<ol>
+<ol start="74" type="1">
 <li><code>torch.tan(input, out=None) -&gt; tensor</code></li>
 </ol>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120160331982.png" class="" title="image-20250120160331982">
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120160337540.png" class="" title="image-20250120160337540">
-<ol>
+<ol start="75" type="1">
 <li><code>torch.tanh(input, out=None) -&gt; tensor</code></li>
 </ol>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120160426308.png" class="" title="image-20250120160426308">
-<ol>
+<ol start="76" type="1">
 <li><code>torch.trunc(input, out=None) -&gt; tensor</code></li>
 </ol>
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120160453390.png" class="" title="image-20250120160453390">
 <img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120160459199.png" class="" title="image-20250120160459199">
-<h5 id="累积操作"><a href="#累积操作" class="headerlink" title="累积操作"></a>累积操作</h5></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://inzeroworld.com.cn">Zero</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://inzeroworld.com.cn/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/">http://inzeroworld.com.cn/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://inzeroworld.com.cn" target="_blank">In Zero's World</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/DeepLearn/">DeepLearn</a></div><div class="post_share"><div class="social-share" data-image="https://s2.loli.net/2024/01/01/2UupRJhBag9Zqo6.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="/2025/01/16/2025Winter-Scheduler/" title="2025Winter-Scheduler"><img class="cover" src="https://s2.loli.net/2024/01/01/2UupRJhBag9Zqo6.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">2025Winter-Scheduler</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s2.loli.net/2024/03/06/DdFmuoWIlGbg6fU.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Zero</div><div class="author-info__description">去见证世间的美好</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">60</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">11</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/KiCola"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98%E7%AC%94%E8%AE%B0"><span class="toc-text">深度学习实战笔记</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Pytorch-%E8%AF%A6%E8%A7%A3"><span class="toc-text">Pytorch 详解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%9A%E8%AF%86"><span class="toc-text">通识</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6"><span class="toc-text">核心组件</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BC%A0%E9%87%8F"><span class="toc-text">张量</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9B%BE%E5%BD%A2"><span class="toc-text">图形</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BA%93%E6%96%87%E4%BB%B6"><span class="toc-text">库文件</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#torch"><span class="toc-text">torch</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Tensor"><span class="toc-text">Tensor</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E6%93%8D%E4%BD%9C"><span class="toc-text">创建操作</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%B4%A2%E5%BC%95%EF%BC%8C%E5%88%87%E7%89%87%EF%BC%8C%E8%BF%9E%E6%8E%A5%EF%BC%8C%E6%8D%A2%E4%BD%8D"><span class="toc-text">索引，切片，连接，换位</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%9A%8F%E6%9C%BA%E6%8A%BD%E6%A0%B7"><span class="toc-text">随机抽样</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%BA%8F%E5%88%97%E5%8C%96"><span class="toc-text">序列化</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%B9%B6%E8%A1%8C%E5%8C%96"><span class="toc-text">并行化</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%95%B0%E5%AD%A6%E6%93%8D%E4%BD%9C"><span class="toc-text">数学操作</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E6%8C%89%E7%82%B9%E6%93%8D%E4%BD%9C"><span class="toc-text">按点操作</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%B4%AF%E7%A7%AF%E6%93%8D%E4%BD%9C"><span class="toc-text">累积操作</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/" title="深度学习实战笔记-1-Pytorch详解"><img src="https://s2.loli.net/2024/01/01/2UupRJhBag9Zqo6.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="深度学习实战笔记-1-Pytorch详解"/></a><div class="content"><a class="title" href="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/" title="深度学习实战笔记-1-Pytorch详解">深度学习实战笔记-1-Pytorch详解</a><time datetime="2025-01-19T11:51:56.000Z" title="发表于 2025-01-19 19:51:56">2025-01-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/01/16/2025Winter-Scheduler/" title="2025Winter-Scheduler"><img src="https://s2.loli.net/2024/01/01/2UupRJhBag9Zqo6.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="2025Winter-Scheduler"/></a><div class="content"><a class="title" href="/2025/01/16/2025Winter-Scheduler/" title="2025Winter-Scheduler">2025Winter-Scheduler</a><time datetime="2025-01-16T09:08:30.000Z" title="发表于 2025-01-16 17:08:30">2025-01-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/01/14/PatternRecognition-17-%E8%81%9A%E7%B1%BB%E5%88%86%E6%9E%90/" title="PatternRecognition-17-聚类分析"><img src="https://s2.loli.net/2024/01/01/5aAzeSl942kDdWn.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="PatternRecognition-17-聚类分析"/></a><div class="content"><a class="title" href="/2025/01/14/PatternRecognition-17-%E8%81%9A%E7%B1%BB%E5%88%86%E6%9E%90/" title="PatternRecognition-17-聚类分析">PatternRecognition-17-聚类分析</a><time datetime="2025-01-14T07:36:58.000Z" title="发表于 2025-01-14 15:36:58">2025-01-14</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/01/14/PatternRecognition-16-%E7%89%B9%E5%BE%81%E6%8F%90%E5%8F%96/" title="PatternRecognition-16-特征提取"><img src="https://s2.loli.net/2024/01/01/5aAzeSl942kDdWn.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="PatternRecognition-16-特征提取"/></a><div class="content"><a class="title" href="/2025/01/14/PatternRecognition-16-%E7%89%B9%E5%BE%81%E6%8F%90%E5%8F%96/" title="PatternRecognition-16-特征提取">PatternRecognition-16-特征提取</a><time datetime="2025-01-14T07:36:45.000Z" title="发表于 2025-01-14 15:36:45">2025-01-14</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/01/14/PatternRecognition-15-%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9/" title="PatternRecognition-15-特征选择"><img src="https://s2.loli.net/2024/01/01/5aAzeSl942kDdWn.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="PatternRecognition-15-特征选择"/></a><div class="content"><a class="title" href="/2025/01/14/PatternRecognition-15-%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9/" title="PatternRecognition-15-特征选择">PatternRecognition-15-特征选择</a><time datetime="2025-01-14T07:36:33.000Z" title="发表于 2025-01-14 15:36:33">2025-01-14</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://s2.loli.net/2024/01/01/2UupRJhBag9Zqo6.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2018 - 2025 By Zero</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">in Zero's world</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.12.0"></script><script src="/js/main.js?v=4.12.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.32/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+<h5 id="累积操作">累积操作</h5>
+<ol start="77" type="1">
+<li><code>torch.cumprod(input, dim, out=None) -&gt; tensor</code></li>
+</ol>
+<img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120161457183.png" class="" title="image-20250120161457183">
+<img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120161504029.png" class="" title="image-20250120161504029">
+<ol start="78" type="1">
+<li><code>torch.cumsum(input, dim, out=None) -&gt; tensor</code></li>
+</ol>
+<img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120161609106.png" class="" title="image-20250120161609106">
+<img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120161615156.png" class="" title="image-20250120161615156">
+<ol start="79" type="1">
+<li><code>torch.dist(input, other, p=2, out=None) -&gt; tensor</code></li>
+</ol>
+<img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120161728980.png" class="" title="image-20250120161728980">
+<img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120161741213.png" class="" title="image-20250120161741213">
+<ol start="80" type="1">
+<li><code>torch.mean(input) -&gt; float</code></li>
+</ol>
+<img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120161931276.png" class="" title="image-20250120161931276">
+<img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120161936962.png" class="" title="image-20250120161936962">
+<ol start="81" type="1">
+<li><code>torch.median()</code></li>
+</ol>
+<img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120162033298.png" class="" title="image-20250120162033298">
+<img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120162041653.png" class="" title="image-20250120162041653">
+<ol start="82" type="1">
+<li><code>torch.mode()</code></li>
+</ol>
+<img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120162106111.png" class="" title="image-20250120162106111">
+<img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120162112350.png" class="" title="image-20250120162112350">
+<ol start="83" type="1">
+<li><code>torch.norm(input, p=2) -&gt; float</code></li>
+</ol>
+<img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120162204023.png" class="" title="image-20250120162204023">
+<ol start="84" type="1">
+<li><code>torch.prod()</code></li>
+</ol>
+<img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120162229216.png" class="" title="image-20250120162229216">
+<ol start="85" type="1">
+<li><code>torch.std()</code></li>
+</ol>
+<img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120162245101.png" class="" title="image-20250120162245101">
+<img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120162249961.png" class="" title="image-20250120162249961">
+<img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120162543241.png" class="" title="image-20250120162543241">
+<ol start="86" type="1">
+<li><code>torch.sum(input) -&gt; tensor</code></li>
+</ol>
+<img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120162609020.png" class="" title="image-20250120162609020">
+<img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120162616383.png" class="" title="image-20250120162616383">
+<ol start="87" type="1">
+<li><code>torch.var(input) -&gt; tensor</code></li>
+</ol>
+<img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120162731641.png" class="" title="image-20250120162731641">
+<img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120162738307.png" class="" title="image-20250120162738307">
+<ol start="88" type="1">
+<li><code>torch.eq()</code></li>
+</ol>
+<img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120162801932.png" class="" title="image-20250120162801932">
+<ol start="89" type="1">
+<li><code>torch.equal(tensor1, tensor2)</code></li>
+</ol>
+<img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120163149997.png" class="" title="image-20250120163149997">
+<ol start="90" type="1">
+<li><code>torch.ge()</code></li>
+</ol>
+<img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120163340464.png" class="" title="image-20250120163340464">
+<img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120163347721.png" class="" title="image-20250120163347721">
+<ol start="91" type="1">
+<li><code>torch.gt</code></li>
+</ol>
+<img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120163409910.png" class="" title="image-20250120163409910">
+<ol start="92" type="1">
+<li><code>torch.kthvalue</code></li>
+</ol>
+<img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120163447380.png" class="" title="image-20250120163447380">
+<img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120163452111.png" class="" title="image-20250120163452111">
+<ol start="93" type="1">
+<li><code>torch.le()</code></li>
+</ol>
+<img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120163508366.png" class="" title="image-20250120163508366">
+<ol start="94" type="1">
+<li><code>torch.lt()</code></li>
+</ol>
+<img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120163528766.png" class="" title="image-20250120163528766">
+<img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120163538163.png" class="" title="image-20250120163538163">
+<ol start="95" type="1">
+<li><code>torch.max()</code></li>
+</ol>
+<img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120163713136.png" class="" title="image-20250120163713136">
+<img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120163721772.png" class="" title="image-20250120163721772">
+<img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120163734106.png" class="" title="image-20250120163734106">
+<ol start="96" type="1">
+<li><code>torch.min()</code></li>
+</ol>
+<img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120163823362.png" class="" title="image-20250120163823362">
+<img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120163814838.png" class="" title="image-20250120163814838">
+<img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120163834927.png" class="" title="image-20250120163834927">
+<ol start="97" type="1">
+<li><code>torch.ne()</code></li>
+</ol>
+<img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120163914951.png" class="" title="image-20250120163914951">
+<ol start="98" type="1">
+<li><code>torch.sort()</code></li>
+</ol>
+<img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120163940414.png" class="" title="image-20250120163940414">
+<img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120163945240.png" class="" title="image-20250120163945240">
+<ol start="99" type="1">
+<li><code>torch.topk()</code></li>
+</ol>
+<img src="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/image-20250120164003296.png" class="" title="image-20250120164003296">
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://inzeroworld.com.cn">Zero</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://inzeroworld.com.cn/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/">http://inzeroworld.com.cn/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://inzeroworld.com.cn" target="_blank">In Zero's World</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/DeepLearn/">DeepLearn</a></div><div class="post_share"><div class="social-share" data-image="https://s2.loli.net/2024/01/01/2UupRJhBag9Zqo6.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="/2025/01/16/2025Winter-Scheduler/" title="2025Winter-Scheduler"><img class="cover" src="https://s2.loli.net/2024/01/01/2UupRJhBag9Zqo6.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">2025Winter-Scheduler</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s2.loli.net/2024/03/06/DdFmuoWIlGbg6fU.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Zero</div><div class="author-info__description">去见证世间的美好</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">60</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">11</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/KiCola"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98%E7%AC%94%E8%AE%B0"><span class="toc-text">深度学习实战笔记</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#pytorch-%E8%AF%A6%E8%A7%A3"><span class="toc-text">Pytorch 详解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%9A%E8%AF%86"><span class="toc-text">通识</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6"><span class="toc-text">核心组件</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BC%A0%E9%87%8F"><span class="toc-text">张量</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BA%93%E6%96%87%E4%BB%B6"><span class="toc-text">库文件</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#torch"><span class="toc-text">torch</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#tensor"><span class="toc-text">Tensor</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E6%93%8D%E4%BD%9C"><span class="toc-text">创建操作</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%B4%A2%E5%BC%95%E5%88%87%E7%89%87%E8%BF%9E%E6%8E%A5%E6%8D%A2%E4%BD%8D"><span class="toc-text">索引，切片，连接，换位</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%9A%8F%E6%9C%BA%E6%8A%BD%E6%A0%B7"><span class="toc-text">随机抽样</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%BA%8F%E5%88%97%E5%8C%96"><span class="toc-text">序列化</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%B9%B6%E8%A1%8C%E5%8C%96"><span class="toc-text">并行化</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%95%B0%E5%AD%A6%E6%93%8D%E4%BD%9C"><span class="toc-text">数学操作</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E6%8C%89%E7%82%B9%E6%93%8D%E4%BD%9C"><span class="toc-text">按点操作</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%B4%AF%E7%A7%AF%E6%93%8D%E4%BD%9C"><span class="toc-text">累积操作</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/" title="深度学习实战笔记-1-Pytorch详解"><img src="https://s2.loli.net/2024/01/01/2UupRJhBag9Zqo6.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="深度学习实战笔记-1-Pytorch详解"/></a><div class="content"><a class="title" href="/2025/01/19/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-1-Pytorch%E9%80%9A%E8%AF%86/" title="深度学习实战笔记-1-Pytorch详解">深度学习实战笔记-1-Pytorch详解</a><time datetime="2025-01-19T11:51:56.000Z" title="发表于 2025-01-19 19:51:56">2025-01-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/01/16/2025Winter-Scheduler/" title="2025Winter-Scheduler"><img src="https://s2.loli.net/2024/01/01/2UupRJhBag9Zqo6.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="2025Winter-Scheduler"/></a><div class="content"><a class="title" href="/2025/01/16/2025Winter-Scheduler/" title="2025Winter-Scheduler">2025Winter-Scheduler</a><time datetime="2025-01-16T09:08:30.000Z" title="发表于 2025-01-16 17:08:30">2025-01-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/01/14/PatternRecognition-17-%E8%81%9A%E7%B1%BB%E5%88%86%E6%9E%90/" title="PatternRecognition-17-聚类分析"><img src="https://s2.loli.net/2024/01/01/5aAzeSl942kDdWn.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="PatternRecognition-17-聚类分析"/></a><div class="content"><a class="title" href="/2025/01/14/PatternRecognition-17-%E8%81%9A%E7%B1%BB%E5%88%86%E6%9E%90/" title="PatternRecognition-17-聚类分析">PatternRecognition-17-聚类分析</a><time datetime="2025-01-14T07:36:58.000Z" title="发表于 2025-01-14 15:36:58">2025-01-14</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/01/14/PatternRecognition-16-%E7%89%B9%E5%BE%81%E6%8F%90%E5%8F%96/" title="PatternRecognition-16-特征提取"><img src="https://s2.loli.net/2024/01/01/5aAzeSl942kDdWn.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="PatternRecognition-16-特征提取"/></a><div class="content"><a class="title" href="/2025/01/14/PatternRecognition-16-%E7%89%B9%E5%BE%81%E6%8F%90%E5%8F%96/" title="PatternRecognition-16-特征提取">PatternRecognition-16-特征提取</a><time datetime="2025-01-14T07:36:45.000Z" title="发表于 2025-01-14 15:36:45">2025-01-14</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/01/14/PatternRecognition-15-%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9/" title="PatternRecognition-15-特征选择"><img src="https://s2.loli.net/2024/01/01/5aAzeSl942kDdWn.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="PatternRecognition-15-特征选择"/></a><div class="content"><a class="title" href="/2025/01/14/PatternRecognition-15-%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9/" title="PatternRecognition-15-特征选择">PatternRecognition-15-特征选择</a><time datetime="2025-01-14T07:36:33.000Z" title="发表于 2025-01-14 15:36:33">2025-01-14</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://s2.loli.net/2024/01/01/2UupRJhBag9Zqo6.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2018 - 2025 By Zero</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">in Zero's world</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.12.0"></script><script src="/js/main.js?v=4.12.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.32/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
   window.MathJax = {
     tex: {
       inlineMath: [['$', '$'], ['\\(', '\\)']],
