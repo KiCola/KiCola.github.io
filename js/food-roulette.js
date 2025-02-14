@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 document.addEventListener('DOMContentLoaded', function() {
     const foodItemsContainer = document.getElementById('food-items');
     const addFoodButton = document.getElementById('add-food-button');
@@ -87,7 +89,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 保存食物数据到 _data/foods.json
     function saveFoods() {
-        const token = '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'; // 替换为你的 GitHub Token
+        const token = Process.env.GITHUB_TOKEN; // 从环境变量中读取token
         const repo = 'KiCola.github.io'; // 例如：inzeroworld/blog
         const path = '_data/foods.json'; // 文件路径
         const url = `https://api.github.com/repos/${repo}/contents/${path}`;
