@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const foodItemsContainer = document.getElementById('food-items');
     const addFoodButton = document.getElementById('add-food-button');
     const newFoodInput = document.getElementById('new-food');
-    const categorySelect = document.getElementById('category-select'); // 新增：分类选择
+    const categorySelect = document.getElementById('category-select');
     const spinButton = document.getElementById('spin-button');
     const canvas = document.getElementById('roulette-wheel');
     const ctx = canvas.getContext('2d');
@@ -87,16 +87,40 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 保存食物数据到 _data/foods.json
     function saveFoods() {
-        fetch('/save-foods', {
-            method: 'POST',
+        const token = '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'; // 替换为你的 GitHub Token
+        const repo = 'KiCola.github.io'; // 例如：inzeroworld/blog
+        const path = '_data/foods.json'; // 文件路径
+        const url = `https://api.github.com/repos/${repo}/contents/${path}`;
+
+        // 获取文件的 SHA
+        fetch(url, {
             headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(foodData)
+                'Authorization': `token ${token}`
+            }
         })
         .then(response => response.json())
-        .then(data => console.log('保存成功:', data))
-        .catch(error => console.error('保存失败:', error));
+        .then(data => {
+            const sha = data.sha; // 文件的 SHA
+            const content = btoa(JSON.stringify(foodData, null, 2)); // 编码为 Base64
+
+            // 更新文件
+            fetch(url, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `token ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    message: '更新食物列表',
+                    content: content,
+                    sha: sha
+                })
+            })
+            .then(response => response.json())
+            .then(data => console.log('保存成功:', data))
+            .catch(error => console.error('保存失败:', error));
+        })
+        .catch(error => console.error('获取文件 SHA 失败:', error));
     }
 
     // 添加菜品
@@ -124,15 +148,20 @@ document.addEventListener('DOMContentLoaded', function() {
     function updateRoulette() {
         const selectedCategory = categorySelect.value;
         const foods = foodData[selectedCategory] || [];
-        const totalWeight = foods.reduce((sum, food) => sum + food.weight, 0);
+        const selectedFoods = foods.filter(food => {
+            const checkbox = document.querySelector(`input[value="${food.name}"]`);
+            return checkbox && checkbox.checked; // 只选中已勾选的食物
+        });
+
+        const totalWeight = selectedFoods.reduce((sum, food) => sum + food.weight, 0);
         let startAngle = 0;
 
-        segments = foods.map((food, index) => {
+        segments = selectedFoods.map((food, index) => {
             const angle = (food.weight / totalWeight) * 360;
             const segment = {
                 label: food.name,
                 angle: angle,
-                color: `hsl(${index * (360 / foods.length)}, 70%, 50%)`,
+                color: `hsl(${index * (360 / selectedFoods.length)}, 70%, 50%)`,
                 startAngle: startAngle,
                 endAngle: startAngle + angle
             };
