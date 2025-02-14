@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>菜品转盘</title>
+    <style>
+        #roulette-wheel {
+            border: 2px solid #000;
+            border-radius: 50%;
+        }
+    </style>
+<meta name="generator" content="Hexo 7.0.0"><link href="https://cdn.bootcss.com/KaTeX/0.11.1/katex.min.css" rel="stylesheet" /></head>
+<body>
+    <h1>菜品转盘</h1>
+    <div id="food-list">
+        <h2>菜品清单</h2>
+        <div id="add-food">
+            <input type="text" id="new-food" placeholder="输入菜品名称">
+            <button id="add-food-button">添加菜品</button>
+        </div>
+        <ul id="food-items"></ul>
+    </div>
+    <div id="roulette">
+        <h2>转盘</h2>
+        <canvas id="roulette-wheel" width="400" height="400"></canvas>
+        <button id="spin-button">开始旋转</button>
+    </div>
+    <script src="/js/food-roulette.js"></script>
+</body>
+</html>
