@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const token = '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'; // 替换为你的 GitHub Token
         const repo = 'KiCola.github.io'; // 例如：inzeroworld/blog
         const path = '_data/foods.json'; // 文件路径
-        const url = `https://api.github.com/repos/KiCola/${repo}/contents/${path}`;
+        const url = `https://api.github.com/repos/${repo}/contents/${path}`;
 
         // 获取文件的 SHA
         fetch(url, {
