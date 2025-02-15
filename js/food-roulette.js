@@ -8,16 +8,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 初始食物列表，包含名称和比例
     let selectedFoods = [
-        {
-            "肉类": [
-                { "name": "白切鸡", "weight": 1, "color": "#ff6f61" },
-                { "name": "黄焖鸡", "weight": 2, "color": "#ffcc00" }
-            ],
-            "蔬菜": [
-                { "name": "炒青菜", "weight": 1, "color": "#00cc66" },
-                { "name": "凉拌黄瓜", "weight": 2, "color": "#66ccff" }
-            ]
-        }
+        { name: "菜品1", weight: 1 },
+        { name: "菜品2", weight: 2 },
+        { name: "菜品3", weight: 3 }
     ];
 
     let segments = [];
