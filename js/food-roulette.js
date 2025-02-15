@@ -27,30 +27,30 @@ document.addEventListener('DOMContentLoaded', function () {
             {
                 name: "韵酒一楼",
                 foods: [
-                    { name: "馄饨", weight: 1, color: "#ff6f61", checked: true },
-                    { name: "刀削面", weight: 1, color: "#ffcc00", checked: true }
+                    { name: "馄饨", weight: 1, color: "#5c2223", checked: true },//暗玉紫
+                    { name: "刀削面", weight: 1, color: "#845EC2", checked: true }
                 ]
             },
             {
                 name: "韵酒二楼",
                 foods: [
-                    { name: "牛肉油泼面", weight: 1, color: "#00cc66", checked: true },
-                    { name: "烤鸡腿饭", weight: 1, color: "#66ccff", checked: true },
-                    { name: "烤肉饭", weight: 1, color: "#ffcc00", checked: true }
+                    { name: "牛肉油泼面", weight: 1, color: "#D65DB1", checked: true },
+                    { name: "烤鸡腿饭", weight: 1, color: "#FF6F91", checked: true },
+                    { name: "烤肉饭", weight: 1, color: "#FF9671", checked: true }
                 ]
             }
             {
                 name: "学一食堂",
                 foods: [
-                    { name: "过桥米线", weight: 1, color: "#ff6f61", checked: true },
-                    { name: "大盘鸡拌面", weight: 1, color: "#ffcc00", checked: true }
+                    { name: "过桥米线", weight: 1, color: "#FFC75F", checked: true },
+                    { name: "大盘鸡拌面", weight: 1, color: "#F9F871", checked: true }
                 ]
             },
             {
                 name: "学二食堂",
                 foods: [
-                    { name: "鸡蛋火腿炒饭", weight: 1, color: "#ff6f61", checked: true },
-                    { name: "黄焖鸡", weight: 1, color: "#ffcc00", checked: true }
+                    { name: "鸡蛋火腿炒饭", weight: 1, color: "#2C73D2", checked: true },
+                    { name: "黄焖鸡", weight: 1, color: "#0081CF", checked: true }
                 ]
             }
         ],
