@@ -36,12 +36,19 @@ document.addEventListener('DOMContentLoaded', function() {
             checkbox.type = 'checkbox';
             checkbox.value = food.name;
             checkbox.checked = true; // 默认选中
-            checkbox.addEventListener('change', function() {
-                if (!this.checked) {
-                    selectedFoods = selectedFoods.filter(item => item.name !== food.name);
-                    renderFoodList();
-                    updateRoulette();
-                }
+
+            // 添加删除按钮（× 号）
+            const deleteButton = document.createElement('button');
+            deleteButton.innerHTML = '×';
+            deleteButton.style.marginLeft = '10px';
+            deleteButton.style.color = 'red';
+            deleteButton.style.border = 'none';
+            deleteButton.style.background = 'none';
+            deleteButton.style.cursor = 'pointer';
+            deleteButton.addEventListener('click', function() {
+                selectedFoods = selectedFoods.filter(item => item.name !== food.name);
+                renderFoodList();
+                updateRoulette();
             });
 
             // 添加比例输入框
@@ -58,6 +65,7 @@ document.addEventListener('DOMContentLoaded', function() {
             label.appendChild(document.createTextNode(` ${food.name} `));
             label.appendChild(weightInput);
             li.appendChild(label);
+            li.appendChild(deleteButton); // 添加删除按钮
             foodItemsContainer.appendChild(li);
         });
     }
@@ -94,6 +102,16 @@ document.addEventListener('DOMContentLoaded', function() {
             ctx.fillStyle = segment.color;
             ctx.fill();
             ctx.stroke();
+
+            // 添加文字标注
+            ctx.save();
+            ctx.translate(200, 200);
+            ctx.rotate((segment.startAngle + segment.endAngle) / 2 * Math.PI / 180);
+            ctx.fillStyle = '#000';
+            ctx.font = '16px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText(segment.label, 120, 10);
+            ctx.restore();
         });
     }
 
@@ -126,6 +144,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 let winningSegment = segments.find(segment => {
                     return finalAngle >= segment.startAngle && finalAngle < segment.endAngle;
                 });
+
+                // 调整指针位置
+                const pointer = document.getElementById('pointer');
+                const pointerAngle = (winningSegment.startAngle + winningSegment.endAngle) / 2;
+                pointer.style.transform = `translate(-50%, -100%) rotate(${pointerAngle}deg)`;
+
                 alert(`恭喜你选中了: ${winningSegment.label}`);
             }
         }
