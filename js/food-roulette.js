@@ -1,9 +1,8 @@
-require('dotenv').config();
-
 document.addEventListener('DOMContentLoaded', function() {
     const foodItemsContainer = document.getElementById('food-items');
     const addFoodButton = document.getElementById('add-food-button');
     const newFoodInput = document.getElementById('new-food');
+    const newFoodColor = document.getElementById('new-food-color');
     const categorySelect = document.getElementById('category-select');
     const spinButton = document.getElementById('spin-button');
     const canvas = document.getElementById('roulette-wheel');
@@ -76,9 +75,20 @@ document.addEventListener('DOMContentLoaded', function() {
                 updateRoulette();
             });
 
+            // 添加颜色选择器
+            const colorInput = document.createElement('input');
+            colorInput.type = 'color';
+            colorInput.value = food.color || '#ff6f61'; // 默认颜色
+            colorInput.addEventListener('change', function() {
+                food.color = this.value;
+                saveFoods(); // 保存到文件
+                updateRoulette();
+            });
+
             label.appendChild(checkbox);
             label.appendChild(document.createTextNode(` ${food.name} `));
             label.appendChild(weightInput);
+            label.appendChild(colorInput); // 添加颜色选择器
             li.appendChild(label);
             li.appendChild(deleteButton); // 添加删除按钮
             foodItemsContainer.appendChild(li);
@@ -88,9 +98,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // 保存食物数据到 _data/foods.json
-    function saveFoods() {p
-        const token = process.env.GITHUB_TOKEN; // 从环境变量中读取token
-        const repo = 'KiCola.github.io'; // 例如：inzeroworld/blog
+    function saveFoods() {
+        const token = process.env.GITHUB_TOKEN; // 从环境变量读取 Token
+        const repo = 'KiCola/KiCola.github.io'; // 替换为你的仓库名
         const path = '_data/foods.json'; // 文件路径
         const url = `https://api.github.com/repos/${repo}/contents/${path}`;
 
@@ -129,6 +139,7 @@ document.addEventListener('DOMContentLoaded', function() {
     addFoodButton.addEventListener('click', function() {
         const foodName = newFoodInput.value.trim();
         const selectedCategory = categorySelect.value;
+        const foodColor = newFoodColor.value;
 
         if (foodName && selectedCategory) {
             if (!foodData[selectedCategory]) {
@@ -137,7 +148,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // 检查是否已存在同名菜品
             if (!foodData[selectedCategory].some(food => food.name === foodName)) {
-                foodData[selectedCategory].push({ name: foodName, weight: 1 }); // 默认比例为 1
+                foodData[selectedCategory].push({ name: foodName, weight: 1, color: foodColor }); // 默认比例为 1
                 newFoodInput.value = ''; // 清空输入框
                 saveFoods(); // 保存到文件
                 renderFoodList();
@@ -163,7 +174,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const segment = {
                 label: food.name,
                 angle: angle,
-                color: `hsl(${index * (360 / selectedFoods.length)}, 70%, 50%)`,
+                color: food.color || `hsl(${index * (360 / selectedFoods.length)}, 70%, 50%)`,
                 startAngle: startAngle,
                 endAngle: startAngle + angle
             };
@@ -177,19 +188,28 @@ document.addEventListener('DOMContentLoaded', function() {
     // 绘制转盘
     function drawRoulette() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        segments.forEach(segment => {
+        segments.forEach((segment, index) => {
+            const startAngle = segment.startAngle;
+            const endAngle = segment.endAngle;
+
+            // 创建渐变色
+            const gradient = ctx.createRadialGradient(200, 200, 0, 200, 200, 200);
+            gradient.addColorStop(0, lightenColor(segment.color, 20)); // 浅色
+            gradient.addColorStop(1, segment.color); // 用户选择的颜色
+
+            // 绘制扇区
             ctx.beginPath();
             ctx.moveTo(200, 200);
-            ctx.arc(200, 200, 200, segment.startAngle * Math.PI / 180, segment.endAngle * Math.PI / 180);
+            ctx.arc(200, 200, 200, startAngle * Math.PI / 180, endAngle * Math.PI / 180);
             ctx.closePath();
-            ctx.fillStyle = segment.color;
+            ctx.fillStyle = gradient;
             ctx.fill();
             ctx.stroke();
 
             // 添加文字标注
             ctx.save();
             ctx.translate(200, 200);
-            ctx.rotate((segment.startAngle + segment.endAngle) / 2 * Math.PI / 180);
+            ctx.rotate((startAngle + endAngle) / 2 * Math.PI / 180);
             ctx.fillStyle = '#000';
             ctx.font = '16px Arial';
             ctx.textAlign = 'center';
@@ -207,12 +227,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     function spinWheel(spinEnd, spinDuration) {
-        // 添加旋转动画
-        canvas.classList.add('animate__animated', 'animate__rotateIn');
-        setTimeout(() => {
-            canvas.classList.remove('animate__animated', 'animate__rotateIn');
-        }, spinDuration);
-
         let startTime = null;
         function animate(time) {
             if (!startTime) startTime = time;
@@ -233,10 +247,40 @@ document.addEventListener('DOMContentLoaded', function() {
                 const pointerAngle = (winningSegment.startAngle + winningSegment.endAngle) / 2;
                 pointer.style.transform = `translate(-50%, -100%) rotate(${pointerAngle}deg)`;
 
-                alert(`恭喜你选中了: ${winningSegment.label}`);
+                // 显示自定义弹窗
+                showAlert(`恭喜你选中了: ${winningSegment.label}`);
             }
         }
         requestAnimationFrame(animate);
+    }
+
+    // 显示自定义弹窗
+    function showAlert(message) {
+        const alert = document.getElementById('custom-alert');
+        const overlay = document.getElementById('overlay');
+        const alertMessage = document.getElementById('alert-message');
+
+        alertMessage.textContent = message;
+        alert.style.display = 'block';
+        overlay.style.display = 'block';
+
+        // 关闭弹窗
+        document.getElementById('alert-close').addEventListener('click', function() {
+            alert.style.display = 'none';
+            overlay.style.display = 'none';
+        });
+    }
+
+    // 辅助函数：调整颜色亮度
+    function lightenColor(color, percent) {
+        const num = parseInt(color.slice(1), 16);
+        const amt = Math.round(2.55 * percent);
+        const R = (num >> 16) + amt;
+        const G = (num >> 8 & 0x00FF) + amt;
+        const B = (num & 0x0000FF) + amt;
+        return `#${(0x1000000 + (R < 255 ? R < 1 ? 0 : R : 255) * 0x10000 +
+            (G < 255 ? G < 1 ? 0 : G : 255) * 0x100 +
+            (B < 255 ? B < 1 ? 0 : B : 255)).toString(16).slice(1)}`;
     }
 
     // 初始化
