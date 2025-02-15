@@ -1,48 +1,211 @@
-/* 食物种类样式 */
+/* 基础样式 */
+body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background-color: #f8f9fa;
+    color: #2c3e50;
+    margin: 0;
+    padding: 2rem;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.title {
+    text-align: center;
+    color: #e74c3c;
+    margin-bottom: 2rem;
+    font-size: 2.5rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+}
+
+/* 输入区域 */
+.input-group {
+    background: #ffffff;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    margin-bottom: 2rem;
+}
+
+.input-row {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.text-input {
+    flex: 1;
+    padding: 0.8rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.text-input:focus {
+    outline: none;
+    border-color: #e74c3c;
+}
+
+.action-button {
+    padding: 0.8rem 1.5rem;
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 
+        background-color 0.3s ease,
+        transform 0.2s ease;
+}
+
+.action-button:hover {
+    background-color: #c0392b;
+    transform: translateY(-1px);
+}
+
+/* 分类管理 */
+.category-container {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
 .category {
-    margin-bottom: 20px;
+    margin-bottom: 1.5rem;
+    border: 2px solid #f1f1f1;
+    border-radius: 8px;
+    padding: 1rem;
 }
 
-.category label {
-    font-weight: bold;
-    font-size: 18px;
+.category-label {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 1rem;
 }
 
-/* 菜品列表样式 */
-#food-items ul {
-    list-style-type: none;
-    padding-left: 20px;
+.category-name {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #34495e;
 }
 
-#food-items li {
-    margin: 5px 0;
+.food-list {
+    list-style: none;
+    padding-left: 2rem;
+    margin: 0;
 }
 
-/* 删除按钮样式 */
-.delete-button {
-    margin-left: 10px;
-    color: red;
+.food-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid #eee;
+}
+
+.food-item:last-child {
+    border-bottom: none;
+}
+
+.food-label {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.food-name {
+    min-width: 120px;
+}
+
+.weight-input {
+    width: 60px;
+    padding: 0.3rem;
+    border: 2px solid #eee;
+    border-radius: 6px;
+    text-align: center;
+}
+
+.color-input {
+    width: 40px;
+    height: 30px;
+    padding: 0;
     border: none;
     background: none;
     cursor: pointer;
 }
 
-/* 转盘样式 */
-#roulette-wheel {
-    border: 2px solid #ddd;
-    border-radius: 50%;
-    background-color: #fff;
+.delete-button {
+    background: none;
+    border: none;
+    color: #e74c3c;
+    font-size: 1.4rem;
+    cursor: pointer;
+    padding: 0 0.5rem;
+    transition: transform 0.2s ease;
 }
 
-/* 指针样式 */
-#pointer {
+.delete-button:hover {
+    transform: scale(1.2);
+}
+
+/* 转盘区域 */
+.roulette-section {
+    margin-top: 3rem;
+    text-align: center;
+}
+
+.roulette-wrapper {
+    position: relative;
+    display: inline-block;
+    margin: 2rem 0;
+}
+
+#roulette-wheel {
+    border: 4px solid #fff;
+    border-radius: 50%;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+}
+
+.roulette-pointer {
     position: absolute;
-    top: 50%;
+    top: 0;
     left: 50%;
     width: 0;
     height: 0;
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
-    border-bottom: 20px solid black;
-    transform: translate(-50%, -100%);
+    border-left: 18px solid transparent;
+    border-right: 18px solid transparent;
+    border-bottom: 36px solid #e74c3c;
+    transform: translate(-50%, -50%);
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+    z-index: 10;
+}
+
+.spin-button {
+    padding: 1rem 3rem;
+    font-size: 1.2rem;
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: 
+        transform 0.2s ease,
+        box-shadow 0.3s ease;
+    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+}
+
+.spin-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(231, 76, 60, 0.4);
+}
+
+.spin-button:active {
+    transform: translateY(1px);
 }
