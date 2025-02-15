@@ -1,91 +1,48 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f9f9f9;
-    color: #333;
-    margin: 0;
-    padding: 20px;
-}
-
-h1 {
-    text-align: center;
-    color: #ff6f61;
-}
-
-#food-list {
-    max-width: 400px;
-    margin: 0 auto;
-    background: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-#add-food {
-    display: flex;
-    gap: 10px;
+/* 食物种类样式 */
+.category {
     margin-bottom: 20px;
 }
 
-#new-food {
-    flex: 1;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+.category label {
+    font-weight: bold;
+    font-size: 18px;
 }
 
-#add-food-button {
-    padding: 10px 20px;
-    background-color: #ff6f61;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-#add-food-button:hover {
-    background-color: #ff4a3d;
-}
-
-#food-items {
-    list-style: none;
-    padding: 0;
+/* 菜品列表样式 */
+#food-items ul {
+    list-style-type: none;
+    padding-left: 20px;
 }
 
 #food-items li {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 10px;
+    margin: 5px 0;
 }
 
-#food-items input[type="number"] {
-    width: 50px;
-    padding: 5px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+/* 删除按钮样式 */
+.delete-button {
+    margin-left: 10px;
+    color: red;
+    border: none;
+    background: none;
+    cursor: pointer;
 }
 
-#roulette {
-    text-align: center;
-    margin-top: 40px;
-}
-
+/* 转盘样式 */
 #roulette-wheel {
     border: 2px solid #ddd;
     border-radius: 50%;
     background-color: #fff;
 }
 
-#spin-button {
-    margin-top: 20px;
-    padding: 10px 20px;
-    background-color: #ff6f61;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-#spin-button:hover {
-    background-color: #ff4a3d;
+/* 指针样式 */
+#pointer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 20px solid black;
+    transform: translate(-50%, -100%);
 }

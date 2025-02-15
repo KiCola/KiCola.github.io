@@ -1,93 +1,132 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const foodItemsContainer = document.getElementById('food-items');
+    const addCategoryButton = document.getElementById('add-category-button');
+    const newCategoryInput = document.getElementById('new-category');
     const addFoodButton = document.getElementById('add-food-button');
     const newFoodInput = document.getElementById('new-food');
     const spinButton = document.getElementById('spin-button');
     const canvas = document.getElementById('roulette-wheel');
     const ctx = canvas.getContext('2d');
 
-    // 初始食物列表，包含名称和比例
-    let selectedFoods = [
+    // 初始食物种类和菜品
+    let foodCategories = [
         {
-            "肉类": [
-                { "name": "白切鸡", "weight": 1, "color": "#ff6f61" },
-                { "name": "黄焖鸡", "weight": 2, "color": "#ffcc00" }
-            ],
-            "蔬菜": [
-                { "name": "炒青菜", "weight": 1, "color": "#00cc66" },
-                { "name": "凉拌黄瓜", "weight": 2, "color": "#66ccff" }
+            name: "肉类",
+            foods: [
+                { name: "白切鸡", weight: 1, color: "#ff6f61" },
+                { name: "黄焖鸡", weight: 2, color: "#ffcc00" }
+            ]
+        },
+        {
+            name: "蔬菜",
+            foods: [
+                { name: "炒青菜", weight: 1, color: "#00cc66" },
+                { name: "凉拌黄瓜", weight: 2, color: "#66ccff" }
             ]
         }
     ];
 
     let segments = [];
 
-    // 添加菜品
-    addFoodButton.addEventListener('click', function() {
-        const foodName = newFoodInput.value.trim();
-        if (foodName && !selectedFoods.some(food => food.name === foodName)) {
-            selectedFoods.push({ name: foodName, weight: 1 }); // 默认比例为 1
-            newFoodInput.value = ''; // 清空输入框
+    // 添加食物种类
+    addCategoryButton.addEventListener('click', function () {
+        const categoryName = newCategoryInput.value.trim();
+        if (categoryName && !foodCategories.some(category => category.name === categoryName)) {
+            foodCategories.push({ name: categoryName, foods: [] });
+            newCategoryInput.value = ''; // 清空输入框
             renderFoodList();
-            updateRoulette();
         }
     });
 
-    // 渲染菜品列表
-    function renderFoodList() {
-        foodItemsContainer.innerHTML = ''; // 清空现有列表
-        selectedFoods.forEach((food, index) => {
-            const li = document.createElement('li');
-            const label = document.createElement('label');
-            const checkbox = document.createElement('input');
-            checkbox.type = 'checkbox';
-            checkbox.value = food.name;
-            checkbox.checked = true; // 默认选中
-
-            // 添加删除按钮（× 号）
-            const deleteButton = document.createElement('button');
-            deleteButton.innerHTML = '×';
-            deleteButton.style.marginLeft = '10px';
-            deleteButton.style.color = 'red';
-            deleteButton.style.border = 'none';
-            deleteButton.style.background = 'none';
-            deleteButton.style.cursor = 'pointer';
-            deleteButton.addEventListener('click', function() {
-                selectedFoods = selectedFoods.filter(item => item.name !== food.name);
+    // 添加菜品
+    addFoodButton.addEventListener('click', function () {
+        const foodName = newFoodInput.value.trim();
+        const selectedCategory = document.querySelector('input[name="category"]:checked');
+        if (foodName && selectedCategory) {
+            const category = foodCategories.find(cat => cat.name === selectedCategory.value);
+            if (category && !category.foods.some(food => food.name === foodName)) {
+                category.foods.push({ name: foodName, weight: 1, color: getRandomColor() });
+                newFoodInput.value = ''; // 清空输入框
                 renderFoodList();
                 updateRoulette();
+            }
+        }
+    });
+
+    // 渲染食物种类和菜品列表
+    function renderFoodList() {
+        foodItemsContainer.innerHTML = ''; // 清空现有列表
+        foodCategories.forEach((category, catIndex) => {
+            // 渲染食物种类
+            const categoryDiv = document.createElement('div');
+            categoryDiv.className = 'category';
+
+            const categoryLabel = document.createElement('label');
+            const categoryCheckbox = document.createElement('input');
+            categoryCheckbox.type = 'radio';
+            categoryCheckbox.name = 'category';
+            categoryCheckbox.value = category.name;
+            categoryCheckbox.checked = catIndex === 0; // 默认选中第一个种类
+
+            categoryLabel.appendChild(categoryCheckbox);
+            categoryLabel.appendChild(document.createTextNode(` ${category.name}`));
+            categoryDiv.appendChild(categoryLabel);
+
+            // 渲染菜品
+            const foodList = document.createElement('ul');
+            category.foods.forEach((food, foodIndex) => {
+                const foodItem = document.createElement('li');
+                const foodLabel = document.createElement('label');
+                const foodCheckbox = document.createElement('input');
+                foodCheckbox.type = 'checkbox';
+                foodCheckbox.value = food.name;
+                foodCheckbox.checked = true; // 默认选中
+
+                // 删除菜品按钮
+                const deleteButton = document.createElement('button');
+                deleteButton.innerHTML = '×';
+                deleteButton.className = 'delete-button';
+                deleteButton.addEventListener('click', function () {
+                    category.foods = category.foods.filter(item => item.name !== food.name);
+                    renderFoodList();
+                    updateRoulette();
+                });
+
+                // 调整菜品比例
+                const weightInput = document.createElement('input');
+                weightInput.type = 'number';
+                weightInput.value = food.weight;
+                weightInput.min = 1;
+                weightInput.addEventListener('change', function () {
+                    food.weight = parseInt(this.value);
+                    updateRoulette();
+                });
+
+                foodLabel.appendChild(foodCheckbox);
+                foodLabel.appendChild(document.createTextNode(` ${food.name} `));
+                foodLabel.appendChild(weightInput);
+                foodItem.appendChild(foodLabel);
+                foodItem.appendChild(deleteButton);
+                foodList.appendChild(foodItem);
             });
 
-            // 添加比例输入框
-            const weightInput = document.createElement('input');
-            weightInput.type = 'number';
-            weightInput.value = food.weight;
-            weightInput.min = 1;
-            weightInput.addEventListener('change', function() {
-                food.weight = parseInt(this.value);
-                updateRoulette();
-            });
-
-            label.appendChild(checkbox);
-            label.appendChild(document.createTextNode(` ${food.name} `));
-            label.appendChild(weightInput);
-            li.appendChild(label);
-            li.appendChild(deleteButton); // 添加删除按钮
-            foodItemsContainer.appendChild(li);
+            categoryDiv.appendChild(foodList);
+            foodItemsContainer.appendChild(categoryDiv);
         });
     }
 
     // 更新转盘
     function updateRoulette() {
-        const totalWeight = selectedFoods.reduce((sum, food) => sum + food.weight, 0);
+        const allFoods = foodCategories.flatMap(category => category.foods);
+        const totalWeight = allFoods.reduce((sum, food) => sum + food.weight, 0);
         let startAngle = 0;
 
-        segments = selectedFoods.map((food, index) => {
+        segments = allFoods.map((food, index) => {
             const angle = (food.weight / totalWeight) * 360;
             const segment = {
                 label: food.name,
                 angle: angle,
-                color: `hsl(${index * (360 / selectedFoods.length)}, 70%, 50%)`,
+                color: food.color,
                 startAngle: startAngle,
                 endAngle: startAngle + angle
             };
@@ -123,7 +162,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // 旋转转盘
-    spinButton.addEventListener('click', function() {
+    spinButton.addEventListener('click', function () {
         if (segments.length === 0) return;
         let spinDuration = 3000; // 3 seconds
         let spinEnd = Math.random() * 360;
@@ -161,6 +200,11 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
         requestAnimationFrame(animate);
+    }
+
+    // 随机生成颜色
+    function getRandomColor() {
+        return `hsl(${Math.random() * 360}, 70%, 50%)`;
     }
 
     // 初始化
