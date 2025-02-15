@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 从 foods.json 加载食物数据
     function loadFoods() {
-        fetch('/roulette/foods.json')
+        fetch('./foods.json')
             .then(response => {
                 if (!response.ok) {
                     throw new Error('网络响应不正常');
