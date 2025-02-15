@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     { name: "烤鸡腿饭", weight: 1, color: "#FF6F91", checked: true },
                     { name: "烤肉饭", weight: 1, color: "#FF9671", checked: true }
                 ]
-            }
+            },
             {
                 name: "学一食堂",
                 foods: [
