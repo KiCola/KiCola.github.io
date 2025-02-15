@@ -25,17 +25,32 @@ document.addEventListener('DOMContentLoaded', function () {
     let state = {
         foodCategories: [
             {
-                name: "肉类",
+                name: "韵酒一楼",
                 foods: [
-                    { name: "白切鸡", weight: 1, color: "#ff6f61", checked: true },
-                    { name: "黄焖鸡", weight: 2, color: "#ffcc00", checked: true }
+                    { name: "馄饨", weight: 1, color: "#ff6f61", checked: true },
+                    { name: "刀削面", weight: 1, color: "#ffcc00", checked: true }
                 ]
             },
             {
-                name: "蔬菜",
+                name: "韵酒二楼",
                 foods: [
-                    { name: "炒青菜", weight: 1, color: "#00cc66", checked: true },
-                    { name: "凉拌黄瓜", weight: 2, color: "#66ccff", checked: true }
+                    { name: "牛肉油泼面", weight: 1, color: "#00cc66", checked: true },
+                    { name: "烤鸡腿饭", weight: 1, color: "#66ccff", checked: true },
+                    { name: "烤肉饭", weight: 1, color: "#ffcc00", checked: true }
+                ]
+            }
+            {
+                name: "学一食堂",
+                foods: [
+                    { name: "过桥米线", weight: 1, color: "#ff6f61", checked: true },
+                    { name: "大盘鸡拌面", weight: 1, color: "#ffcc00", checked: true }
+                ]
+            },
+            {
+                name: "学二食堂",
+                foods: [
+                    { name: "鸡蛋火腿炒饭", weight: 1, color: "#ff6f61", checked: true },
+                    { name: "黄焖鸡", weight: 1, color: "#ffcc00", checked: true }
                 ]
             }
         ],
