@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 从 _data/foods.json 加载食物数据
     function loadFoods() {
-        fetch('../roulette/foods.json')
+        fetch('./foods.json')
             .then(response => response.json())
             .then(data => {
                 foodData = data;
