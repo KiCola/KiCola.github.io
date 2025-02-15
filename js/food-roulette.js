@@ -8,14 +8,28 @@ document.addEventListener('DOMContentLoaded', function() {
     const canvas = document.getElementById('roulette-wheel');
     const ctx = canvas.getContext('2d');
 
+    // 调试：检查元素是否存在
+    if (!categorySelect) console.error('未找到 category-select 元素');
+    if (!newFoodInput) console.error('未找到 new-food 元素');
+    if (!newFoodColor) console.error('未找到 new-food-color 元素');
+    if (!addFoodButton) console.error('未找到 add-food-button 元素');
+    if (!foodItemsContainer) console.error('未找到 food-items 元素');
+    if (!spinButton) console.error('未找到 spin-button 元素');
+    if (!canvas) console.error('未找到 roulette-wheel 元素');
+
     let selectedFoods = []; // 当前选中的食物列表
     let segments = []; // 转盘扇区
-    let foodData = {}; // 从 _data/foods.json 加载的食物数据
+    let foodData = {}; // 从 foods.json 加载的食物数据
 
-    // 从 _data/foods.json 加载食物数据
+    // 从 foods.json 加载食物数据
     function loadFoods() {
-        fetch('foods.json')
-            .then(response => response.json())
+        fetch('/roulette/foods.json')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('网络响应不正常');
+                }
+                return response.json();
+            })
             .then(data => {
                 foodData = data;
                 renderCategorySelect(); // 渲染分类选择
@@ -26,6 +40,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 渲染分类选择
     function renderCategorySelect() {
+        if (!categorySelect) {
+            console.error('未找到 category-select 元素');
+            return;
+        }
+
         const categories = Object.keys(foodData);
         categories.forEach(category => {
             const option = document.createElement('option');
@@ -37,6 +56,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 渲染食物列表
     function renderFoodList() {
+        if (!foodItemsContainer) {
+            console.error('未找到 food-items 元素');
+            return;
+        }
+
         foodItemsContainer.innerHTML = ''; // 清空现有列表
         const selectedCategory = categorySelect.value;
         const foods = foodData[selectedCategory] || [];
@@ -93,26 +117,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
         updateRoulette();
     }
-
-    // 添加菜品
-    addFoodButton.addEventListener('click', function() {
-        const foodName = newFoodInput.value.trim();
-        const selectedCategory = categorySelect.value;
-        const foodColor = newFoodColor.value;
-
-        if (foodName && selectedCategory) {
-            if (!foodData[selectedCategory]) {
-                foodData[selectedCategory] = []; // 如果分类不存在，创建新分类
-            }
-
-            // 检查是否已存在同名菜品
-            if (!foodData[selectedCategory].some(food => food.name === foodName)) {
-                foodData[selectedCategory].push({ name: foodName, weight: 1, color: foodColor }); // 默认比例为 1
-                newFoodInput.value = ''; // 清空输入框
-                renderFoodList();
-            }
-        }
-    });
 
     // 更新转盘
     function updateRoulette() {
