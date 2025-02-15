@@ -209,3 +209,16 @@ body {
 .spin-button:active {
     transform: translateY(1px);
 }
+
+/* 复选框状态 */
+.food-checkbox {
+    width: 18px;
+    height: 18px;
+    accent-color: #e74c3c;
+    cursor: pointer;
+}
+
+.food-checkbox:not(:checked) ~ * {
+    opacity: 0.6;
+    pointer-events: none;
+}

@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // DOM 元素引用
+    // ==================== DOM 元素引用 ====================
     const dom = {
         foodItems: document.getElementById('food-items'),
         addCategoryBtn: document.getElementById('add-category-button'),
@@ -12,21 +12,30 @@ document.addEventListener('DOMContentLoaded', function () {
         pointer: document.getElementById('pointer')
     };
 
-    // 应用状态
+    // ==================== 状态验证 ====================
+    const requiredElements = ['foodItems', 'addCategoryBtn', 'addFoodBtn', 'spinBtn', 'canvas', 'pointer'];
+    requiredElements.forEach(key => {
+        if (!dom[key]) {
+            console.error(`关键元素 ${key} 未找到`, dom[key]);
+            throw new Error(`页面初始化失败：${key} 元素缺失`);
+        }
+    });
+
+    // ==================== 应用状态 ====================
     let state = {
         foodCategories: [
             {
                 name: "肉类",
                 foods: [
-                    { name: "白切鸡", weight: 1, color: "#ff6f61" },
-                    { name: "黄焖鸡", weight: 2, color: "#ffcc00" }
+                    { name: "白切鸡", weight: 1, color: "#ff6f61", checked: true },
+                    { name: "黄焖鸡", weight: 2, color: "#ffcc00", checked: true }
                 ]
             },
             {
                 name: "蔬菜",
                 foods: [
-                    { name: "炒青菜", weight: 1, color: "#00cc66" },
-                    { name: "凉拌黄瓜", weight: 2, color: "#66ccff" }
+                    { name: "炒青菜", weight: 1, color: "#00cc66", checked: true },
+                    { name: "凉拌黄瓜", weight: 2, color: "#66ccff", checked: true }
                 ]
             }
         ],
@@ -35,25 +44,23 @@ document.addEventListener('DOMContentLoaded', function () {
         isSpinning: false
     };
 
-    // 初始化选中分类
-    state.selectedCategory = state.foodCategories[0]?.name;
-
-    // 事件委托处理
+    // ==================== 事件监听 ====================
     dom.foodItems.addEventListener('change', handleCategoryChange);
     dom.foodItems.addEventListener('click', handleDeleteFood);
     dom.foodItems.addEventListener('change', handleWeightChange);
     dom.foodItems.addEventListener('change', handleColorChange);
-
-    // 按钮事件
+    dom.foodItems.addEventListener('change', handleCheckboxChange);
+    
     dom.addCategoryBtn.addEventListener('click', addCategory);
     dom.addFoodBtn.addEventListener('click', addFood);
     dom.spinBtn.addEventListener('click', startSpin);
 
-    // 初始化渲染
+    // ==================== 初始化 ====================
+    state.selectedCategory = state.foodCategories[0]?.name;
     renderFoodList();
     updateRoulette();
 
-    // 事件处理函数
+    // ==================== 事件处理器 ====================
     function handleCategoryChange(e) {
         if (e.target.matches('input[type="radio"][name="category"]')) {
             state.selectedCategory = e.target.value;
@@ -63,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function handleDeleteFood(e) {
         if (e.target.matches('.delete-button')) {
             const li = e.target.closest('li');
-            const foodName = li.querySelector('input[type="checkbox"]').value;
+            const foodName = li.querySelector('.food-checkbox').value;
             const category = state.foodCategories.find(c => c.name === state.selectedCategory);
             
             if (category) {
@@ -77,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function handleWeightChange(e) {
         if (e.target.matches('.weight-input')) {
             const input = e.target;
-            const foodName = input.closest('li').querySelector('input[type="checkbox"]').value;
+            const foodName = input.closest('li').querySelector('.food-checkbox').value;
             const category = state.foodCategories.find(c => c.name === state.selectedCategory);
             const food = category?.foods.find(f => f.name === foodName);
 
@@ -91,7 +98,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function handleColorChange(e) {
         if (e.target.matches('.color-input')) {
             const input = e.target;
-            const foodName = input.closest('li').querySelector('input[type="checkbox"]').value;
+            const foodName = input.closest('li').querySelector('.food-checkbox').value;
             const category = state.foodCategories.find(c => c.name === state.selectedCategory);
             const food = category?.foods.find(f => f.name === foodName);
 
@@ -102,7 +109,20 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // 功能函数
+    function handleCheckboxChange(e) {
+        if (e.target.matches('.food-checkbox')) {
+            const foodName = e.target.value;
+            const category = state.foodCategories.find(c => c.name === state.selectedCategory);
+            const food = category?.foods.find(f => f.name === foodName);
+            
+            if (food) {
+                food.checked = e.target.checked;
+                updateRoulette();
+            }
+        }
+    }
+
+    // ==================== 核心功能 ====================
     function addCategory() {
         const categoryName = dom.newCategory.value.trim();
         if (!categoryName) return;
@@ -121,15 +141,13 @@ document.addEventListener('DOMContentLoaded', function () {
         const foodName = dom.newFood.value.trim();
         if (!foodName || !state.selectedCategory) return;
 
-        const category = state.foodCategories.find(
-            c => c.name === state.selectedCategory
-        );
-
+        const category = state.foodCategories.find(c => c.name === state.selectedCategory);
         if (category && !category.foods.some(f => f.name === foodName)) {
             category.foods.push({
                 name: foodName,
                 weight: 1,
-                color: getRandomColor()
+                color: getRandomColor(),
+                checked: true
             });
             dom.newFood.value = '';
             renderFoodList();
@@ -157,7 +175,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                     type="checkbox" 
                                     class="food-checkbox"
                                     value="${food.name}" 
-                                    checked
+                                    ${food.checked ? 'checked' : ''}
                                 >
                                 <span class="food-name">${food.name}</span>
                                 <input 
@@ -181,7 +199,10 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function updateRoulette() {
-        const allFoods = state.foodCategories.flatMap(c => c.foods);
+        const allFoods = state.foodCategories
+            .flatMap(c => c.foods)
+            .filter(f => f.checked);
+        
         const totalWeight = allFoods.reduce((sum, f) => sum + f.weight, 0);
         
         state.segments = allFoods.reduce((acc, food) => {
@@ -254,7 +275,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }, spinDuration);
     }
 
-    // 工具函数
+    // ==================== 工具函数 ====================
     function getRandomColor() {
         return `hsl(${Math.random() * 360}, 70%, 50%)`;
     }
@@ -262,7 +283,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function darkenColor(hex, amount) {
         const r = Math.max(0, parseInt(hex.substr(1,2), 16) * (1 - amount));
         const g = Math.max(0, parseInt(hex.substr(3,2), 16) * (1 - amount));
-        const b = Math.max(0, parseInt(hex.substr(5,2), 16) * (1 - amount));
+        const b = Math.max(0, parseInt(hex.substr(5,2), 16) * (1 - amount);
         return `#${[r,g,b].map(v => Math.floor(v).toString(16).padStart(2,'0')).join('')}`;
     }
 });
