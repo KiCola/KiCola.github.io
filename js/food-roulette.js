@@ -283,7 +283,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function darkenColor(hex, amount) {
         const r = Math.max(0, parseInt(hex.substr(1,2), 16) * (1 - amount));
         const g = Math.max(0, parseInt(hex.substr(3,2), 16) * (1 - amount));
-        const b = Math.max(0, parseInt(hex.substr(5,2), 16) * (1 - amount);
+        const b = Math.max(0, parseInt(hex.substr(5,2), 16) * (1 - amount));
         return `#${[r,g,b].map(v => Math.floor(v).toString(16).padStart(2,'0')).join('')}`;
     }
 });
