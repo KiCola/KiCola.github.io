@@ -2,34 +2,45 @@ document.addEventListener('DOMContentLoaded', function() {
     const foodItemsContainer = document.getElementById('food-items');
     const addFoodButton = document.getElementById('add-food-button');
     const newFoodInput = document.getElementById('new-food');
+    const categorySelect = document.getElementById('category-select'); // 新增：分类选择
     const spinButton = document.getElementById('spin-button');
     const canvas = document.getElementById('roulette-wheel');
     const ctx = canvas.getContext('2d');
 
-    // 初始食物列表，包含名称和比例
-    let selectedFoods = [
-        { name: "菜品1", weight: 1 },
-        { name: "菜品2", weight: 2 },
-        { name: "菜品3", weight: 3 }
-    ];
+    let selectedFoods = []; // 当前选中的食物列表
+    let segments = []; // 转盘扇区
+    let foodData = {}; // 从 _data/foods.json 加载的食物数据
 
-    let segments = [];
+    // 从 _data/foods.json 加载食物数据
+    function loadFoods() {
+        fetch('/_data/foods.json')
+            .then(response => response.json())
+            .then(data => {
+                foodData = data;
+                renderCategorySelect(); // 渲染分类选择
+                renderFoodList(); // 渲染食物列表
+            })
+            .catch(error => console.error('加载食物数据失败:', error));
+    }
 
-    // 添加菜品
-    addFoodButton.addEventListener('click', function() {
-        const foodName = newFoodInput.value.trim();
-        if (foodName && !selectedFoods.some(food => food.name === foodName)) {
-            selectedFoods.push({ name: foodName, weight: 1 }); // 默认比例为 1
-            newFoodInput.value = ''; // 清空输入框
-            renderFoodList();
-            updateRoulette();
-        }
-    });
+    // 渲染分类选择
+    function renderCategorySelect() {
+        const categories = Object.keys(foodData);
+        categories.forEach(category => {
+            const option = document.createElement('option');
+            option.value = category;
+            option.textContent = category;
+            categorySelect.appendChild(option);
+        });
+    }
 
-    // 渲染菜品列表
+    // 渲染食物列表
     function renderFoodList() {
         foodItemsContainer.innerHTML = ''; // 清空现有列表
-        selectedFoods.forEach((food, index) => {
+        const selectedCategory = categorySelect.value;
+        const foods = foodData[selectedCategory] || [];
+
+        foods.forEach((food, index) => {
             const li = document.createElement('li');
             const label = document.createElement('label');
             const checkbox = document.createElement('input');
@@ -46,7 +57,8 @@ document.addEventListener('DOMContentLoaded', function() {
             deleteButton.style.background = 'none';
             deleteButton.style.cursor = 'pointer';
             deleteButton.addEventListener('click', function() {
-                selectedFoods = selectedFoods.filter(item => item.name !== food.name);
+                foodData[selectedCategory] = foodData[selectedCategory].filter(item => item.name !== food.name);
+                saveFoods(); // 保存到文件
                 renderFoodList();
                 updateRoulette();
             });
@@ -58,6 +70,7 @@ document.addEventListener('DOMContentLoaded', function() {
             weightInput.min = 1;
             weightInput.addEventListener('change', function() {
                 food.weight = parseInt(this.value);
+                saveFoods(); // 保存到文件
                 updateRoulette();
             });
 
@@ -68,19 +81,58 @@ document.addEventListener('DOMContentLoaded', function() {
             li.appendChild(deleteButton); // 添加删除按钮
             foodItemsContainer.appendChild(li);
         });
+
+        updateRoulette();
     }
+
+    // 保存食物数据到 _data/foods.json
+    function saveFoods() {
+        fetch('/save-foods', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(foodData)
+        })
+        .then(response => response.json())
+        .then(data => console.log('保存成功:', data))
+        .catch(error => console.error('保存失败:', error));
+    }
+
+    // 添加菜品
+    addFoodButton.addEventListener('click', function() {
+        const foodName = newFoodInput.value.trim();
+        const selectedCategory = categorySelect.value;
+
+        if (foodName && selectedCategory) {
+            if (!foodData[selectedCategory]) {
+                foodData[selectedCategory] = []; // 如果分类不存在，创建新分类
+            }
+
+            // 检查是否已存在同名菜品
+            if (!foodData[selectedCategory].some(food => food.name === foodName)) {
+                foodData[selectedCategory].push({ name: foodName, weight: 1 }); // 默认比例为 1
+                newFoodInput.value = ''; // 清空输入框
+                saveFoods(); // 保存到文件
+                renderFoodList();
+                updateRoulette();
+            }
+        }
+    });
 
     // 更新转盘
     function updateRoulette() {
-        const totalWeight = selectedFoods.reduce((sum, food) => sum + food.weight, 0);
+        const selectedCategory = categorySelect.value;
+        const foods = foodData[selectedCategory] || [];
+        const totalWeight = foods.reduce((sum, food) => sum + food.weight, 0);
         let startAngle = 0;
 
-        segments = selectedFoods.map((food, index) => {
+        segments = foods.map((food, index) => {
             const angle = (food.weight / totalWeight) * 360;
             const segment = {
                 label: food.name,
                 angle: angle,
-                color: `hsl(${index * (360 / selectedFoods.length)}, 70%, 50%)`,
+                color: `hsl(${index * (360 / foods.length)}, 70%, 50%)`,
                 startAngle: startAngle,
                 endAngle: startAngle + angle
             };
@@ -157,6 +209,5 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // 初始化
-    renderFoodList();
-    updateRoulette();
+    loadFoods();
 });
