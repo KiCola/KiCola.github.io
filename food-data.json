@@ -1,1 +1,1 @@
-[{"name":"学一食堂","foods":[{"name":"黄焖鸡","weight":1,"color":"#13aa63","checked":true}]},{"name":"韵酒","foods":[{"name":"馄饨","weight":1,"color":"#9c2626","checked":true}]}]
+{"foodCategories":[{"name":"肉类","foods":[{"name":"红烧肉","weight":1,"color":"#ff0000"}]}]}
