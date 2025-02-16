@@ -222,3 +222,17 @@ body {
     opacity: 0.6;
     pointer-events: none;
 }
+
+@keyframes highlight {
+    0% { filter: brightness(100%); }
+    50% { filter: brightness(120%); }
+    100% { filter: brightness(100%); }
+}
+
+.result-highlight {
+    animation: highlight 1s ease-in-out;
+}
+
+.roulette-pointer {
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}

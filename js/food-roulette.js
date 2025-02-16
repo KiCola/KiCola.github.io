@@ -220,16 +220,24 @@ document.addEventListener('DOMContentLoaded', function () {
         
         const totalWeight = allFoods.reduce((sum, f) => sum + f.weight, 0);
         
-        state.segments = allFoods.reduce((acc, food) => {
+        // 精确计算角度（使用浮点数避免累积误差）
+        let currentAngle = 0;
+        state.segments = allFoods.map(food => {
             const angle = (food.weight / totalWeight) * 360;
-            const startAngle = acc.length > 0 ? acc[acc.length-1].endAngle : 0;
-            return [...acc, {
+            const segment = {
                 ...food,
-                startAngle,
-                endAngle: startAngle + angle
-            }];
-        }, []);
-
+                startAngle: currentAngle,
+                endAngle: currentAngle + angle
+            };
+            currentAngle += angle;
+            return segment;
+        });
+    
+        // 修正最后一个扇区的结束角度
+        if (state.segments.length > 0) {
+            state.segments[state.segments.length - 1].endAngle = 360;
+        }
+    
         drawRoulette();
     }
 
@@ -272,22 +280,53 @@ document.addEventListener('DOMContentLoaded', function () {
         
         state.isSpinning = true;
         const spinDuration = 3000;
-        const targetRotation = Math.random() * 360 * 5 + 720; // 至少旋转2圈
+        const baseRotation = 360 * 5; // 基础旋转5圈
+        const targetRotation = baseRotation + Math.random() * 360; // 随机最终角度
         
-        dom.canvas.style.transition = `transform ${spinDuration}ms cubic-bezier(0.25, 0.1, 0.25, 1)`;
-        dom.canvas.style.transform = `rotate(${targetRotation}deg)`;
-
-        setTimeout(() => {
-            const finalRotation = targetRotation % 360;
-            const winningSegment = state.segments.find(s => 
-                finalRotation >= s.startAngle && 
-                finalRotation < s.endAngle
-            );
+        // 重置转盘位置
+        dom.canvas.style.transform = 'rotate(0deg)';
+        
+        // 使用requestAnimationFrame实现平滑动画
+        const startTime = Date.now();
+        
+        function animate() {
+            const progress = Date.now() - startTime;
+            const percentage = Math.min(progress / spinDuration, 1);
+            const currentRotation = targetRotation * percentage;
             
-            dom.canvas.style.transition = '';
-            state.isSpinning = false;
-            alert(`恭喜你选中了：${winningSegment.name}`);
-        }, spinDuration);
+            dom.canvas.style.transform = `rotate(${currentRotation}deg)`;
+            
+            if (percentage < 1) {
+                requestAnimationFrame(animate);
+            } else {
+                // 计算实际停止角度（取模运算）
+                const finalRotation = (targetRotation % 360 + 360) % 360;
+                
+                // 查找命中扇区（包含边界检查）
+                const winningSegment = state.segments.find(s => {
+                    return finalRotation >= s.startAngle && 
+                           finalRotation < s.endAngle;
+                });
+                
+                // 精准计算指针角度（指向扇区中心）
+                if (winningSegment) {
+                    const centerAngle = (winningSegment.startAngle + winningSegment.endAngle) / 2;
+                    dom.pointer.style.transform = `translate(-50%, -100%) rotate(${centerAngle}deg)`;
+                    
+                    // 添加结果高亮动画
+                    dom.canvas.classList.add('result-highlight');
+                    setTimeout(() => {
+                        dom.canvas.classList.remove('result-highlight');
+                    }, 1000);
+                    
+                    alert(`恭喜你选中了：${winningSegment.name}`);
+                }
+                
+                state.isSpinning = false;
+            }
+        }
+        
+        requestAnimationFrame(animate);
     }
 
     // ==================== 工具函数 ====================
