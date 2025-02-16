@@ -25,32 +25,17 @@ document.addEventListener('DOMContentLoaded', function () {
     let state = {
         foodCategories: [
             {
-                name: "韵酒一楼",
+                name: "肉类",
                 foods: [
-                    { name: "馄饨", weight: 1, color: "#5c2223", checked: true },//暗玉紫
-                    { name: "刀削面", weight: 1, color: "#845EC2", checked: true }
+                    { name: "白切鸡", weight: 1, color: "#ff6f61", checked: true },
+                    { name: "黄焖鸡", weight: 2, color: "#ffcc00", checked: true }
                 ]
             },
             {
-                name: "韵酒二楼",
+                name: "蔬菜",
                 foods: [
-                    { name: "牛肉油泼面", weight: 1, color: "#D65DB1", checked: true },
-                    { name: "烤鸡腿饭", weight: 1, color: "#FF6F91", checked: true },
-                    { name: "烤肉饭", weight: 1, color: "#FF9671", checked: true }
-                ]
-            },
-            {
-                name: "学一食堂",
-                foods: [
-                    { name: "过桥米线", weight: 1, color: "#FFC75F", checked: true },
-                    { name: "大盘鸡拌面", weight: 1, color: "#F9F871", checked: true }
-                ]
-            },
-            {
-                name: "学二食堂",
-                foods: [
-                    { name: "鸡蛋火腿炒饭", weight: 1, color: "#2C73D2", checked: true },
-                    { name: "黄焖鸡", weight: 1, color: "#0081CF", checked: true }
+                    { name: "炒青菜", weight: 1, color: "#00cc66", checked: true },
+                    { name: "凉拌黄瓜", weight: 2, color: "#66ccff", checked: true }
                 ]
             }
         ],
@@ -132,6 +117,7 @@ document.addEventListener('DOMContentLoaded', function () {
             
             if (food) {
                 food.checked = e.target.checked;
+                updateFoodItemStyle(e.target.closest('li'), food.checked);
                 updateRoulette();
             }
         }
@@ -184,7 +170,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 </label>
                 <ul class="food-list">
                     ${category.foods.map(food => `
-                        <li class="food-item">
+                        <li class="food-item" data-checked="${food.checked}">
                             <label class="food-label">
                                 <input 
                                     type="checkbox" 
@@ -214,36 +200,48 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function updateRoulette() {
-        const allFoods = state.foodCategories
-            .flatMap(c => c.foods)
-            .filter(f => f.checked);
-        
-        const totalWeight = allFoods.reduce((sum, f) => sum + f.weight, 0);
-        
-        // 精确计算角度（使用浮点数避免累积误差）
-        let currentAngle = 0;
-        state.segments = allFoods.map(food => {
-            const angle = (food.weight / totalWeight) * 360;
-            const segment = {
-                ...food,
-                startAngle: currentAngle,
-                endAngle: currentAngle + angle
-            };
-            currentAngle += angle;
-            return segment;
-        });
-    
-        // 修正最后一个扇区的结束角度
-        if (state.segments.length > 0) {
-            state.segments[state.segments.length - 1].endAngle = 360;
+        try {
+            const allFoods = state.foodCategories
+                .flatMap(c => c.foods)
+                .filter(f => f.checked && f.weight > 0);
+
+            if (allFoods.length === 0) {
+                showEmptyState();
+                return;
+            }
+
+            const totalWeight = allFoods.reduce((sum, f) => sum + f.weight, 0);
+            
+            let currentAngle = 0;
+            state.segments = allFoods.map(food => {
+                const angle = (food.weight / totalWeight) * 360;
+                const segment = {
+                    ...food,
+                    startAngle: currentAngle,
+                    endAngle: currentAngle + angle
+                };
+                currentAngle += angle;
+                return segment;
+            });
+
+            // 修正最后一个扇区角度
+            if (state.segments.length > 0) {
+                state.segments[state.segments.length - 1].endAngle = 360;
+            }
+
+            drawRoulette();
+        } catch (error) {
+            console.error('转盘更新失败:', error);
+            showErrorState();
         }
-    
-        drawRoulette();
     }
 
     function drawRoulette() {
         const { ctx, canvas } = dom;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // 清除空状态
+        canvas.classList.remove('roulette-empty');
 
         state.segments.forEach(segment => {
             const startAngle = segment.startAngle * Math.PI / 180;
@@ -280,13 +278,10 @@ document.addEventListener('DOMContentLoaded', function () {
         
         state.isSpinning = true;
         const spinDuration = 3000;
-        const baseRotation = 360 * 5; // 基础旋转5圈
-        const targetRotation = baseRotation + Math.random() * 360; // 随机最终角度
+        const baseRotation = 360 * 5;
+        const targetRotation = baseRotation + Math.random() * 360;
         
-        // 重置转盘位置
         dom.canvas.style.transform = 'rotate(0deg)';
-        
-        // 使用requestAnimationFrame实现平滑动画
         const startTime = Date.now();
         
         function animate() {
@@ -299,21 +294,16 @@ document.addEventListener('DOMContentLoaded', function () {
             if (percentage < 1) {
                 requestAnimationFrame(animate);
             } else {
-                // 计算实际停止角度（取模运算）
                 const finalRotation = (targetRotation % 360 + 360) % 360;
+                const winningSegment = state.segments.find(s => 
+                    finalRotation >= s.startAngle && 
+                    finalRotation < s.endAngle
+                );
                 
-                // 查找命中扇区（包含边界检查）
-                const winningSegment = state.segments.find(s => {
-                    return finalRotation >= s.startAngle && 
-                           finalRotation < s.endAngle;
-                });
-                
-                // 精准计算指针角度（指向扇区中心）
                 if (winningSegment) {
                     const centerAngle = (winningSegment.startAngle + winningSegment.endAngle) / 2;
                     dom.pointer.style.transform = `translate(-50%, -100%) rotate(${centerAngle}deg)`;
                     
-                    // 添加结果高亮动画
                     dom.canvas.classList.add('result-highlight');
                     setTimeout(() => {
                         dom.canvas.classList.remove('result-highlight');
@@ -339,5 +329,31 @@ document.addEventListener('DOMContentLoaded', function () {
         const g = Math.max(0, parseInt(hex.substr(3,2), 16) * (1 - amount));
         const b = Math.max(0, parseInt(hex.substr(5,2), 16) * (1 - amount));
         return `#${[r,g,b].map(v => Math.floor(v).toString(16).padStart(2,'0')).join('')}`;
+    }
+
+    function updateFoodItemStyle(liElement, isChecked) {
+        liElement.dataset.checked = isChecked;
+        const secondaryElements = liElement.querySelectorAll('.weight-input, .color-input');
+        secondaryElements.forEach(el => {
+            el.style.opacity = isChecked ? '1' : '0.5';
+            el.style.pointerEvents = isChecked ? 'auto' : 'none';
+        });
+    }
+
+    function showEmptyState() {
+        dom.canvas.classList.add('roulette-empty');
+        const ctx = dom.ctx;
+        ctx.fillStyle = '#666';
+        ctx.font = '20px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('请至少选择一个菜品', 200, 200);
+    }
+
+    function showErrorState() {
+        const ctx = dom.ctx;
+        ctx.fillStyle = '#e74c3c';
+        ctx.font = '20px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('转盘初始化失败', 200, 200);
     }
 });
