@@ -109,19 +109,38 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    function handleCheckboxChange(e) {
-        if (e.target.matches('.food-checkbox')) {
-            const foodName = e.target.value;
-            const category = state.foodCategories.find(c => c.name === state.selectedCategory);
-            const food = category?.foods.find(f => f.name === foodName);
+    // 修改复选框事件处理逻辑
+function handleCheckboxChange(e) {
+    if (e.target.matches('.food-checkbox')) {
+        const foodName = e.target.value;
+        // 遍历所有分类找到对应菜品
+        let targetFood = null;
+        let targetCategory = null;
+
+        // 新增：遍历所有分类
+        state.foodCategories.forEach(category => {
+            const found = category.foods.find(f => f.name === foodName);
+            if (found) {
+                targetFood = found;
+                targetCategory = category;
+            }
+        });
+
+        if (targetFood) {
+            // 更新菜品选中状态
+            targetFood.checked = e.target.checked;
             
-            if (food) {
-                food.checked = e.target.checked;
-                updateFoodItemStyle(e.target.closest('li'), food.checked);
-                updateRoulette();
+            // 立即更新转盘
+            updateRoulette();
+            
+            // 更新列表项样式（需要找到对应的DOM元素）
+            const li = e.target.closest('li');
+            if (li) {
+                updateFoodItemStyle(li, targetFood.checked);
             }
         }
     }
+}
 
     // ==================== 核心功能 ====================
     function addCategory() {

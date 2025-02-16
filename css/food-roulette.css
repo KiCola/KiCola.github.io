@@ -81,6 +81,7 @@ body {
     border: 2px solid #f1f1f1;
     border-radius: 8px;
     padding: 1rem;
+    transition: all 0.3s ease;
 }
 
 .category-label {
@@ -96,6 +97,7 @@ body {
     color: #34495e;
 }
 
+/* 菜品列表 */
 .food-list {
     list-style: none;
     padding-left: 2rem;
@@ -257,4 +259,128 @@ body {
 
 .result-highlight {
     animation: highlight 1s ease-in-out;
+}
+
+/* 移动端优化 */
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+    }
+
+    .title {
+        font-size: 1.8rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .input-group {
+        padding: 1rem;
+    }
+
+    .input-row {
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+
+    .text-input {
+        width: 100%;
+        padding: 0.6rem;
+        font-size: 0.9rem;
+    }
+
+    .action-button {
+        width: 100%;
+        padding: 0.6rem;
+        font-size: 0.9rem;
+    }
+
+    .category-container {
+        padding: 1rem;
+    }
+
+    .category {
+        padding: 0.8rem;
+        margin-bottom: 1rem;
+    }
+
+    .category-name {
+        font-size: 1rem;
+    }
+
+    .food-list {
+        padding-left: 1rem;
+    }
+
+    .food-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+        padding: 0.6rem 0;
+    }
+
+    .food-label {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        width: 100%;
+    }
+
+    .weight-input {
+        width: 50px;
+        padding: 0.2rem;
+        font-size: 0.9rem;
+    }
+
+    .color-input {
+        width: 35px;
+        height: 25px;
+    }
+
+    .spin-button {
+        width: 100%;
+        padding: 0.8rem;
+        font-size: 1rem;
+    }
+
+    #roulette-wheel {
+        width: 300px;
+        height: 300px;
+    }
+
+    .roulette-pointer {
+        border-left-width: 12px;
+        border-right-width: 12px;
+        border-bottom-width: 24px;
+    }
+
+    /* 触控优化 */
+    .text-input,
+    .action-button,
+    .spin-button {
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    .action-button:active,
+    .spin-button:active {
+        transform: scale(0.98);
+    }
+
+    /* 防止iOS输入框缩放 */
+    input,
+    select,
+    textarea {
+        font-size: 16px;
+    }
+}
+
+/* 跨分类高亮 */
+.category:has(.food-checkbox:checked) {
+    border-color: #e74c3c66;
+    background: #fff5f5;
+    box-shadow: 0 2px 8px rgba(231, 76, 60, 0.1);
+}
+
+/* 未选中分类视觉降级 */
+.category:not([data-selected="true"]) {
+    opacity: 0.8;
+    background: #f8f9fa;
+    transition: opacity 0.3s ease;
 }
