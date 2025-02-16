@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', async function () {
     // ==================== DOM 元素引用 ====================
     const dom = {
         foodItems: document.getElementById('food-items'),
@@ -15,52 +15,77 @@ document.addEventListener('DOMContentLoaded', function () {
     // ==================== 状态验证 ====================
     const requiredElements = ['foodItems', 'addCategoryBtn', 'addFoodBtn', 'spinBtn', 'canvas', 'pointer'];
     requiredElements.forEach(key => {
-        if (!dom[key]) {
-            console.error(`关键元素 ${key} 未找到`, dom[key]);
-            throw new Error(`页面初始化失败：${key} 元素缺失`);
-        }
+        if (!dom[key]) throw new Error(`关键元素 ${key} 未找到`);
     });
 
     // ==================== 应用状态 ====================
     let state = {
-        foodCategories: [
-            {
-                name: "肉类",
-                foods: [
-                    { name: "白切鸡", weight: 1, color: "#ff6f61", checked: true },
-                    { name: "黄焖鸡", weight: 2, color: "#ffcc00", checked: true }
-                ]
-            },
-            {
-                name: "蔬菜",
-                foods: [
-                    { name: "炒青菜", weight: 1, color: "#00cc66", checked: true },
-                    { name: "凉拌黄瓜", weight: 2, color: "#66ccff", checked: true }
-                ]
-            }
-        ],
+        foodCategories: [],
         selectedCategory: null,
         segments: [],
         isSpinning: false
     };
 
+    // ==================== 数据初始化 ====================
+    async function initializeData() {
+        try {
+            // 1. 尝试从本地存储加载
+            const savedState = localStorage.getItem('foodRouletteState');
+            
+            if (savedState) {
+                const parsed = JSON.parse(savedState);
+                state.foodCategories = parsed.foodCategories.map(category => ({
+                    ...category,
+                    foods: category.foods.map(food => ({
+                        ...food,
+                        checked: true
+                    }))
+                }));
+                return;
+            }
+
+            // 2. 从JSON文件加载默认数据
+            const response = await fetch('<%- url_for("/data/foods.json") %>');
+            if (!response.ok) throw new Error('网络响应不正常');
+            
+            const defaultData = await response.json();
+            state.foodCategories = defaultData.foodCategories.map(category => ({
+                ...category,
+                foods: category.foods.map(food => ({
+                    ...food,
+                    checked: true
+                }))
+            }));
+
+        } catch (error) {
+            console.error('数据加载失败:', error);
+            // 3. 回退硬编码数据
+            state.foodCategories = [{
+                name: "默认分类",
+                foods: [{ 
+                    name: "示例菜品", 
+                    weight: 1, 
+                    color: "#ff6b6b", 
+                    checked: true 
+                }]
+            }];
+        }
+    }
+
     // ==================== 事件监听 ====================
-    dom.foodItems.addEventListener('change', handleCategoryChange);
-    dom.foodItems.addEventListener('click', handleDeleteFood);
-    dom.foodItems.addEventListener('change', handleWeightChange);
-    dom.foodItems.addEventListener('change', handleColorChange);
-    dom.foodItems.addEventListener('change', handleCheckboxChange);
-    
-    dom.addCategoryBtn.addEventListener('click', addCategory);
-    dom.addFoodBtn.addEventListener('click', addFood);
-    dom.spinBtn.addEventListener('click', startSpin);
+    function bindEvents() {
+        dom.foodItems.addEventListener('change', handleCategoryChange);
+        dom.foodItems.addEventListener('click', handleDeleteFood);
+        dom.foodItems.addEventListener('change', handleWeightChange);
+        dom.foodItems.addEventListener('change', handleColorChange);
+        dom.foodItems.addEventListener('change', handleCheckboxChange);
+        
+        dom.addCategoryBtn.addEventListener('click', addCategory);
+        dom.addFoodBtn.addEventListener('click', addFood);
+        dom.spinBtn.addEventListener('click', startSpin);
+    }
 
-    // ==================== 初始化 ====================
-    state.selectedCategory = state.foodCategories[0]?.name;
-    renderFoodList();
-    updateRoulette();
-
-    // ==================== 事件处理器 ====================
+    // ==================== 核心功能 ====================
     function handleCategoryChange(e) {
         if (e.target.matches('input[type="radio"][name="category"]')) {
             state.selectedCategory = e.target.value;
@@ -68,93 +93,72 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function handleDeleteFood(e) {
-        if (e.target.matches('.delete-button')) {
-            const li = e.target.closest('li');
-            const foodName = li.querySelector('.food-checkbox').value;
-            const category = state.foodCategories.find(c => c.name === state.selectedCategory);
-            
-            if (category) {
-                category.foods = category.foods.filter(f => f.name !== foodName);
-                renderFoodList();
-                updateRoulette();
-            }
+        if (!e.target.matches('.delete-button')) return;
+        
+        const li = e.target.closest('li');
+        const foodName = li.querySelector('.food-checkbox').value;
+        const category = state.foodCategories.find(c => c.name === state.selectedCategory);
+        
+        if (category) {
+            category.foods = category.foods.filter(f => f.name !== foodName);
+            renderFoodList();
+            updateRoulette();
         }
     }
 
     function handleWeightChange(e) {
-        if (e.target.matches('.weight-input')) {
-            const input = e.target;
-            const foodName = input.closest('li').querySelector('.food-checkbox').value;
-            const category = state.foodCategories.find(c => c.name === state.selectedCategory);
-            const food = category?.foods.find(f => f.name === foodName);
+        if (!e.target.matches('.weight-input')) return;
+        
+        const input = e.target;
+        const foodName = input.closest('li').querySelector('.food-checkbox').value;
+        const category = state.foodCategories.find(c => c.name === state.selectedCategory);
+        const food = category?.foods.find(f => f.name === foodName);
 
-            if (food) {
-                food.weight = Math.max(1, parseInt(input.value) || 1);
-                updateRoulette();
-            }
+        if (food) {
+            // 修复的代码行（原第118行）
+            food.weight = Math.max(1, parseInt(input.value) || 1);
+            updateRoulette();
         }
     }
 
     function handleColorChange(e) {
-        if (e.target.matches('.color-input')) {
-            const input = e.target;
-            const foodName = input.closest('li').querySelector('.food-checkbox').value;
-            const category = state.foodCategories.find(c => c.name === state.selectedCategory);
-            const food = category?.foods.find(f => f.name === foodName);
+        if (!e.target.matches('.color-input')) return;
+        
+        const input = e.target;
+        const foodName = input.closest('li').querySelector('.food-checkbox').value;
+        const category = state.foodCategories.find(c => c.name === state.selectedCategory);
+        const food = category?.foods.find(f => f.name === foodName);
 
-            if (food) {
-                food.color = input.value;
-                updateRoulette();
-            }
+        if (food) {
+            food.color = input.value;
+            updateRoulette();
         }
     }
 
-    // 修改复选框事件处理逻辑
-function handleCheckboxChange(e) {
-    if (e.target.matches('.food-checkbox')) {
+    function handleCheckboxChange(e) {
+        if (!e.target.matches('.food-checkbox')) return;
+        
         const foodName = e.target.value;
-        // 遍历所有分类找到对应菜品
-        let targetFood = null;
-        let targetCategory = null;
-
-        // 新增：遍历所有分类
         state.foodCategories.forEach(category => {
-            const found = category.foods.find(f => f.name === foodName);
-            if (found) {
-                targetFood = found;
-                targetCategory = category;
+            const food = category.foods.find(f => f.name === foodName);
+            if (food) {
+                food.checked = e.target.checked;
+                updateRoulette();
+                updateFoodItemStyle(e.target.closest('li'), food.checked);
             }
         });
-
-        if (targetFood) {
-            // 更新菜品选中状态
-            targetFood.checked = e.target.checked;
-            
-            // 立即更新转盘
-            updateRoulette();
-            
-            // 更新列表项样式（需要找到对应的DOM元素）
-            const li = e.target.closest('li');
-            if (li) {
-                updateFoodItemStyle(li, targetFood.checked);
-            }
-        }
     }
-}
 
-    // ==================== 核心功能 ====================
     function addCategory() {
         const categoryName = dom.newCategory.value.trim();
-        if (!categoryName) return;
+        if (!categoryName || state.foodCategories.some(c => c.name === categoryName)) return;
 
-        if (!state.foodCategories.some(c => c.name === categoryName)) {
-            state.foodCategories.push({
-                name: categoryName,
-                foods: []
-            });
-            dom.newCategory.value = '';
-            renderFoodList();
-        }
+        state.foodCategories.push({
+            name: categoryName,
+            foods: []
+        });
+        dom.newCategory.value = '';
+        renderFoodList();
     }
 
     function addFood() {
@@ -175,7 +179,10 @@ function handleCheckboxChange(e) {
         }
     }
 
+    // ==================== 视图渲染 ====================
     function renderFoodList() {
+        const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+        
         dom.foodItems.innerHTML = state.foodCategories.map(category => `
             <div class="category">
                 <label class="category-label">
@@ -199,13 +206,13 @@ function handleCheckboxChange(e) {
                                 >
                                 <span class="food-name">${food.name}</span>
                                 <input 
-                                    type="number" 
+                                    type="${isMobile ? 'number' : 'text'}" 
                                     class="weight-input"
                                     value="${food.weight}" 
                                     min="1" 
                                 >
                                 <input 
-                                    type="color" 
+                                    type="${isMobile ? 'text' : 'color'}" 
                                     class="color-input"
                                     value="${food.color}" 
                                 >
@@ -218,6 +225,7 @@ function handleCheckboxChange(e) {
         `).join('');
     }
 
+    // ==================== 转盘功能 ====================
     function updateRoulette() {
         try {
             const allFoods = state.foodCategories
@@ -230,8 +238,8 @@ function handleCheckboxChange(e) {
             }
 
             const totalWeight = allFoods.reduce((sum, f) => sum + f.weight, 0);
-            
             let currentAngle = 0;
+            
             state.segments = allFoods.map(food => {
                 const angle = (food.weight / totalWeight) * 360;
                 const segment = {
@@ -243,7 +251,6 @@ function handleCheckboxChange(e) {
                 return segment;
             });
 
-            // 修正最后一个扇区角度
             if (state.segments.length > 0) {
                 state.segments[state.segments.length - 1].endAngle = 360;
             }
@@ -258,20 +265,16 @@ function handleCheckboxChange(e) {
     function drawRoulette() {
         const { ctx, canvas } = dom;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        // 清除空状态
         canvas.classList.remove('roulette-empty');
 
         state.segments.forEach(segment => {
             const startAngle = segment.startAngle * Math.PI / 180;
             const endAngle = segment.endAngle * Math.PI / 180;
 
-            // 创建渐变
             const gradient = ctx.createRadialGradient(200, 200, 0, 200, 200, 200);
             gradient.addColorStop(0, segment.color);
             gradient.addColorStop(1, darkenColor(segment.color, 0.3));
 
-            // 绘制扇形
             ctx.beginPath();
             ctx.moveTo(200, 200);
             ctx.arc(200, 200, 200, startAngle, endAngle);
@@ -280,7 +283,6 @@ function handleCheckboxChange(e) {
             ctx.fill();
             ctx.stroke();
 
-            // 绘制文字
             ctx.save();
             ctx.translate(200, 200);
             ctx.rotate((startAngle + endAngle) / 2);
@@ -292,50 +294,51 @@ function handleCheckboxChange(e) {
         });
     }
 
+    // ==================== 旋转逻辑 ====================
     function startSpin() {
         if (state.isSpinning || state.segments.length === 0) return;
         
         state.isSpinning = true;
-        const spinDuration = 3000;
-        const baseRotation = 360 * 5;
-        const targetRotation = baseRotation + Math.random() * 360;
+        dom.spinBtn.disabled = true;
+
+        const computedStyle = window.getComputedStyle(dom.canvas);
+        const matrix = computedStyle.transform;
+        // 修复的代码行（原第306行）
+        const currentRotation = matrix !== 'none' 
+            ? Math.round((Math.atan2(...matrix.split('(')[1].split(')')[0].split(',').slice(4,6)) * (180 / Math.PI) % 360))
+            : 0;
+
+        const fullRotations = 5;
+        const spinDuration = 4000;
+        const targetDegrees = currentRotation + (360 * fullRotations) + getTargetOffset();
+
+        dom.canvas.style.transition = `transform ${spinDuration}ms cubic-bezier(0.25, 0.1, 0.25, 1)`;
+        dom.canvas.style.transform = `rotate(${targetDegrees}deg)`;
         
-        dom.canvas.style.transform = 'rotate(0deg)';
-        const startTime = Date.now();
-        
-        function animate() {
-            const progress = Date.now() - startTime;
-            const percentage = Math.min(progress / spinDuration, 1);
-            const currentRotation = targetRotation * percentage;
-            
-            dom.canvas.style.transform = `rotate(${currentRotation}deg)`;
-            
-            if (percentage < 1) {
-                requestAnimationFrame(animate);
-            } else {
-                const finalRotation = (targetRotation % 360 + 360) % 360;
-                const winningSegment = state.segments.find(s => 
-                    finalRotation >= s.startAngle && 
-                    finalRotation < s.endAngle
-                );
-                
-                if (winningSegment) {
-                    const centerAngle = (winningSegment.startAngle + winningSegment.endAngle) / 2;
-                    dom.pointer.style.transform = `translate(-50%, -100%) rotate(${centerAngle}deg)`;
-                    
-                    dom.canvas.classList.add('result-highlight');
-                    setTimeout(() => {
-                        dom.canvas.classList.remove('result-highlight');
-                    }, 1000);
-                    
-                    alert(`恭喜你选中了：${winningSegment.name}`);
-                }
-                
-                state.isSpinning = false;
-            }
-        }
-        
-        requestAnimationFrame(animate);
+        const onAnimationEnd = () => {
+            dom.canvas.removeEventListener('transitionend', onAnimationEnd);
+            showResult(getFinalSegment(targetDegrees));
+            state.isSpinning = false;
+            dom.spinBtn.disabled = false;
+            dom.canvas.style.transition = '';
+        };
+
+        dom.canvas.addEventListener('transitionend', onAnimationEnd);
+    }
+
+    // ==================== 数据持久化 ====================
+    function saveState() {
+        const saveData = {
+            foodCategories: state.foodCategories.map(category => ({
+                ...category,
+                foods: category.foods.map(food => ({
+                    name: food.name,
+                    weight: food.weight,
+                    color: food.color
+                }))
+            }))
+        };
+        localStorage.setItem('foodRouletteState', JSON.stringify(saveData));
     }
 
     // ==================== 工具函数 ====================
@@ -374,5 +377,107 @@ function handleCheckboxChange(e) {
         ctx.font = '20px Arial';
         ctx.textAlign = 'center';
         ctx.fillText('转盘初始化失败', 200, 200);
+    }
+
+    function getTargetOffset() {
+        const validSegments = state.segments.filter(s => s.weight > 0);
+        const targetSegment = validSegments[Math.floor(Math.random() * validSegments.length)];
+        const segmentCenter = (targetSegment.startAngle + targetSegment.endAngle) / 2;
+        return 360 - segmentCenter;
+    }
+
+    function getFinalSegment(totalDegrees) {
+        const normalizedDegrees = (360 - (totalDegrees % 360)) % 360;
+        return state.segments.find(s => 
+            normalizedDegrees >= s.startAngle && 
+            normalizedDegrees < s.endAngle
+        );
+    }
+
+    function showResult(segment) {
+        const modal = document.createElement('div');
+        modal.className = 'result-modal';
+        modal.innerHTML = `
+            <div class="modal-content">
+                <h3>🎉 抽中结果</h3>
+                <div class="result-color" style="background: ${segment.color}"></div>
+                <p>${segment.name}</p>
+                <button class="modal-close">关闭</button>
+            </div>
+        `;
+        
+        modal.querySelector('.modal-close').addEventListener('click', () => {
+            document.body.removeChild(modal);
+        });
+        
+        document.body.appendChild(modal);
+    }
+
+    // ==================== 数据管理功能 ====================
+    window.exportData = function() {
+        const dataStr = JSON.stringify(state.foodCategories, null, 2);
+        const blob = new Blob([dataStr], {type: "application/json"});
+        const url = URL.createObjectURL(blob);
+        
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `food-roulette-${new Date().toISOString().slice(0,10)}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+
+    window.importData = function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            try {
+                const imported = JSON.parse(event.target.result);
+                state.foodCategories = imported.map(category => ({
+                    ...category,
+                    foods: category.foods.map(food => ({
+                        ...food,
+                        checked: true
+                    }))
+                }));
+                renderFoodList();
+                updateRoulette();
+                saveState();
+                e.target.value = '';
+            } catch (error) {
+                alert('文件格式错误！');
+            }
+        };
+        reader.readAsText(file);
+    }
+
+    window.clearData = function() {
+        if (confirm('确定要重置所有数据吗？')) {
+            localStorage.removeItem('foodRouletteState');
+            location.reload();
+        }
+    }
+
+    // ==================== 初始化流程 ====================
+    await initializeData();
+    state.selectedCategory = state.foodCategories[0]?.name;
+    bindEvents();
+    renderFoodList();
+    updateRoulette();
+
+    // 自动保存逻辑
+    const saveDebounce = debounce(saveState, 500);
+    document.addEventListener('input', saveDebounce);
+    document.addEventListener('click', saveDebounce);
+
+    function debounce(func, delay) {
+        let timeout;
+        return function(...args) {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => func.apply(this, args), delay);
+        };
     }
 });

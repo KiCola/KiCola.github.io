@@ -1,386 +1,365 @@
-/* 基础样式 */
-body {
-    font-family: 'Segoe UI', system-ui, sans-serif;
-    background-color: #f8f9fa;
-    color: #2c3e50;
-    margin: 0;
-    padding: 2rem;
-    line-height: 1.6;
+/* 文件路径：source/css/food-roulette/food-roulette.css */
+/* ==================== 基础布局 ==================== */
+.food-roulette-container {
+  max-width: 1280px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5rem;
+  min-height: 80vh;
 }
 
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
+/* ==================== 数据管理控件 ==================== */
+.storage-controls {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  gap: 0.8rem;
+  z-index: 1000;
 }
 
-.title {
-    text-align: center;
-    color: #e74c3c;
-    margin-bottom: 2rem;
-    font-size: 2.5rem;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+.data-btn {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 0.5rem;
+  background: #3498db;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
 }
 
-/* 输入区域 */
+.data-btn:hover {
+  background: #2980b9;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.import-button input[type="file"] {
+  display: none;
+}
+
+/* ==================== 管理面板 ==================== */
+.management-panel {
+  background: #ffffff;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
 .input-group {
-    background: #ffffff;
-    padding: 1.5rem;
-    border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-    margin-bottom: 2rem;
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
 }
 
-.input-row {
-    display: flex;
-    gap: 1rem;
-    margin-bottom: 1rem;
+.input-field {
+  flex: 1;
+  padding: 0.8rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 0.8rem;
+  font-size: 1rem;
+  transition: border-color 0.3s;
 }
 
-.text-input {
-    flex: 1;
-    padding: 0.8rem;
-    border: 2px solid #e0e0e0;
-    border-radius: 8px;
-    font-size: 1rem;
-    transition: border-color 0.3s ease;
+.input-field:focus {
+  border-color: #3498db;
+  outline: none;
 }
 
-.text-input:focus {
-    outline: none;
-    border-color: #e74c3c;
+.action-btn {
+  padding: 0.8rem 1.5rem;
+  background: #2ecc71;
+  color: white;
+  border: none;
+  border-radius: 0.8rem;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s;
 }
 
-.action-button {
-    padding: 0.8rem 1.5rem;
-    background-color: #e74c3c;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: 
-        background-color 0.3s ease,
-        transform 0.2s ease;
+.action-btn:hover {
+  background: #27ae60;
+  transform: scale(1.05);
 }
 
-.action-button:hover {
-    background-color: #c0392b;
-    transform: translateY(-1px);
-}
-
-/* 分类管理 */
-.category-container {
-    background: white;
-    border-radius: 12px;
-    padding: 1.5rem;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+/* ==================== 菜品列表 ==================== */
+.food-list-container {
+  margin-top: 1.5rem;
+  max-height: 60vh;
+  overflow-y: auto;
 }
 
 .category {
-    margin-bottom: 1.5rem;
-    border: 2px solid #f1f1f1;
-    border-radius: 8px;
-    padding: 1rem;
-    transition: all 0.3s ease;
+  margin-bottom: 1.5rem;
 }
 
 .category-label {
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-    margin-bottom: 1rem;
+  display: block;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+  color: #2c3e50;
+  font-weight: 600;
 }
 
-.category-name {
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: #34495e;
-}
-
-/* 菜品列表 */
 .food-list {
-    list-style: none;
-    padding-left: 2rem;
-    margin: 0;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 .food-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.8rem 0;
-    border-bottom: 1px solid #eee;
-    transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  padding: 0.8rem;
+  margin: 0.5rem 0;
+  background: #f8f9fa;
+  border-radius: 0.6rem;
+  transition: all 0.2s;
+  position: relative;
 }
 
-.food-item:last-child {
-    border-bottom: none;
+.food-item:hover {
+  transform: translateX(5px);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
 }
 
 .food-label {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex: 1;
+}
+
+.food-checkbox {
+  width: 1.2rem;
+  height: 1.2rem;
 }
 
 .food-name {
-    min-width: 120px;
+  flex: 1;
+  min-width: 6rem;
+  font-weight: 500;
+  color: #34495e;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .weight-input {
-    width: 60px;
-    padding: 0.3rem;
-    border: 2px solid #eee;
-    border-radius: 6px;
-    text-align: center;
-    transition: all 0.3s ease;
+  width: 4.5rem;
+  padding: 0.4rem;
+  border: 1px solid #ddd;
+  border-radius: 0.4rem;
+  text-align: center;
 }
 
-.color-input {
-    width: 40px;
-    height: 30px;
-    padding: 0;
-    border: none;
-    background: none;
-    cursor: pointer;
-    transition: all 0.3s ease;
+.color-input[type="color"] {
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 0.4rem;
+  overflow: hidden;
+  padding: 0;
 }
 
 .delete-button {
-    background: none;
-    border: none;
-    color: #e74c3c;
-    font-size: 1.4rem;
-    cursor: pointer;
-    padding: 0 0.5rem;
-    transition: transform 0.2s ease;
+  width: 1.8rem;
+  height: 1.8rem;
+  background: #ff6b6b;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: all 0.2s;
 }
 
 .delete-button:hover {
-    transform: scale(1.2);
+  background: #ff4757;
+  transform: rotate(90deg);
 }
 
-/* 转盘区域 */
-.roulette-section {
-    margin-top: 3rem;
-    text-align: center;
+/* ==================== 转盘区 ==================== */
+.roulette-panel {
+  position: sticky;
+  top: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
 }
 
-.roulette-wrapper {
-    position: relative;
-    display: inline-block;
-    margin: 2rem 0;
+.roulette-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1/1;
+  max-width: 400px;
 }
 
 #roulette-wheel {
-    border: 4px solid #fff;
-    border-radius: 50%;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
-    transition: transform 3s cubic-bezier(0.25, 0.1, 0.25, 1);
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 3px solid #2f3542;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .roulette-pointer {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    width: 0;
-    height: 0;
-    border-left: 18px solid transparent;
-    border-right: 18px solid transparent;
-    border-bottom: 36px solid #e74c3c;
-    transform: translate(-50%, -50%);
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
-    z-index: 10;
-    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  position: absolute;
+  top: -2%;
+  left: 50%;
+  width: 3%;
+  height: 12%;
+  background: #ff6b6b;
+  clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+  transform: translateX(-50%);
+  z-index: 2;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
 }
 
-.spin-button {
-    padding: 1rem 3rem;
-    font-size: 1.2rem;
-    background: linear-gradient(135deg, #e74c3c, #c0392b);
-    color: white;
-    border: none;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: 
-        transform 0.2s ease,
-        box-shadow 0.3s ease;
-    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+.spin-btn {
+  padding: 1rem 3rem;
+  background: linear-gradient(135deg, #ff6b6b 0%, #ff8e8e 100%);
+  color: white;
+  border: none;
+  border-radius: 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 4px 12px rgba(255,107,107,0.3);
 }
 
-.spin-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(231, 76, 60, 0.4);
+.spin-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(255,107,107,0.4);
 }
 
-.spin-button:active {
-    transform: translateY(1px);
+/* ==================== 结果弹窗 ==================== */
+.result-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(3px);
+  z-index: 9999;
 }
 
-/* 复选框状态 */
-.food-checkbox {
-    width: 18px;
-    height: 18px;
-    accent-color: #e74c3c;
-    cursor: pointer;
+.modal-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 1.5rem;
+  text-align: center;
+  width: min(90%, 300px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  animation: modalSlide 0.3s ease-out;
 }
 
-.food-item:not([data-checked="true"]) {
-    opacity: 0.6;
-    background-color: #f8f9fa;
+@keyframes modalSlide {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
 }
 
-.food-item:not([data-checked="true"]) .weight-input,
-.food-item:not([data-checked="true"]) .color-input {
-    opacity: 0.5;
-    pointer-events: none;
+.result-color {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin: 1rem auto;
+  border: 4px solid white;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
-.food-item:not([data-checked="true"]) .delete-button {
-    opacity: 0.3;
+.modal-close {
+  padding: 0.8rem 2rem;
+  background: #3498db;
+  color: white;
+  border: none;
+  border-radius: 1rem;
+  cursor: pointer;
+  margin-top: 1.5rem;
+  transition: all 0.2s;
 }
 
-/* 空状态提示 */
-.roulette-empty {
-    background: #f0f0f0 !important;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    color: #666;
+.modal-close:hover {
+  background: #2980b9;
+  transform: translateY(-2px);
 }
 
-/* 高亮动画 */
-@keyframes highlight {
-    0% { filter: brightness(100%); }
-    50% { filter: brightness(120%); }
-    100% { filter: brightness(100%); }
-}
-
-.result-highlight {
-    animation: highlight 1s ease-in-out;
-}
-
-/* 移动端优化 */
+/* ==================== 移动端适配 ==================== */
 @media (max-width: 768px) {
-    .container {
-        padding: 1rem;
-    }
+  .food-roulette-container {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+    gap: 1.5rem;
+  }
 
-    .title {
-        font-size: 1.8rem;
-        margin-bottom: 1.5rem;
-    }
+  .storage-controls {
+    position: static;
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
 
-    .input-group {
-        padding: 1rem;
-    }
+  .management-panel {
+    order: 2;
+  }
 
-    .input-row {
-        flex-direction: column;
-        gap: 0.8rem;
-    }
+  .roulette-panel {
+    order: 1;
+    position: static;
+  }
 
-    .text-input {
-        width: 100%;
-        padding: 0.6rem;
-        font-size: 0.9rem;
-    }
+  .food-item {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.8rem;
+    padding: 1rem;
+  }
 
-    .action-button {
-        width: 100%;
-        padding: 0.6rem;
-        font-size: 0.9rem;
-    }
+  .food-label {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto auto;
+    grid-template-areas: 
+      "checkbox name"
+      "weight color";
+    gap: 0.8rem;
+  }
 
-    .category-container {
-        padding: 1rem;
-    }
+  .weight-input,
+  .color-input {
+    width: 100% !important;
+  }
 
-    .category {
-        padding: 0.8rem;
-        margin-bottom: 1rem;
-    }
-
-    .category-name {
-        font-size: 1rem;
-    }
-
-    .food-list {
-        padding-left: 1rem;
-    }
-
-    .food-item {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.5rem;
-        padding: 0.6rem 0;
-    }
-
-    .food-label {
-        flex-wrap: wrap;
-        gap: 0.5rem;
-        width: 100%;
-    }
-
-    .weight-input {
-        width: 50px;
-        padding: 0.2rem;
-        font-size: 0.9rem;
-    }
-
-    .color-input {
-        width: 35px;
-        height: 25px;
-    }
-
-    .spin-button {
-        width: 100%;
-        padding: 0.8rem;
-        font-size: 1rem;
-    }
-
-    #roulette-wheel {
-        width: 300px;
-        height: 300px;
-    }
-
-    .roulette-pointer {
-        border-left-width: 12px;
-        border-right-width: 12px;
-        border-bottom-width: 24px;
-    }
-
-    /* 触控优化 */
-    .text-input,
-    .action-button,
-    .spin-button {
-        -webkit-tap-highlight-color: transparent;
-    }
-
-    .action-button:active,
-    .spin-button:active {
-        transform: scale(0.98);
-    }
-
-    /* 防止iOS输入框缩放 */
-    input,
-    select,
-    textarea {
-        font-size: 16px;
-    }
+  .color-input[type="color"] {
+    height: 2.5rem;
+  }
 }
 
-/* 跨分类高亮 */
-.category:has(.food-checkbox:checked) {
-    border-color: #e74c3c66;
-    background: #fff5f5;
-    box-shadow: 0 2px 8px rgba(231, 76, 60, 0.1);
+/* ==================== 状态样式 ==================== */
+.food-item[data-checked="false"] {
+  opacity: 0.5;
+  background: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 5px,
+    rgba(0,0,0,0.05) 5px,
+    rgba(0,0,0,0.05) 10px
+  );
 }
 
-/* 未选中分类视觉降级 */
-.category:not([data-selected="true"]) {
-    opacity: 0.8;
-    background: #f8f9fa;
-    transition: opacity 0.3s ease;
+.roulette-empty {
+  background: repeating-conic-gradient(
+    #f0f0f0 0deg 10deg,
+    #e0e0e0 10deg 20deg
+  ) !important;
 }
