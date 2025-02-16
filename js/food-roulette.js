@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             }
 
             // 2. 从JSON文件加载默认数据
-            const response = await fetch('<%- url_for("/data/foods.json") %>');
+            const response = await fetch('<%- url_for("/food-data.json") %>');
             if (!response.ok) throw new Error('网络响应不正常');
             
             const defaultData = await response.json();
