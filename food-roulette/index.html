@@ -1,59 +1,53 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>菜品转盘</title>
     <link rel="stylesheet" href="/css/food-roulette.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 <meta name="generator" content="Hexo 7.0.0"><link href="https://cdn.bootcss.com/KaTeX/0.11.1/katex.min.css" rel="stylesheet" /></head>
 <body>
-  <div class="food-roulette-container">
-    <!-- 数据管理控件 -->
-    <div class="storage-controls">
-      <button class="data-btn" onclick="exportData()">📤 导出数据</button>
-      <label class="import-button data-btn">
-        📥 导入数据
-        <input type="file" hidden onchange="importData(event)">
-      </label>
-      <button class="data-btn" onclick="clearData()">🔄 重置数据</button>
-    </div>
+    <main class="container">
+        <h1 class="title">菜品转盘</h1>
+        
+        <section class="food-management">
+            <h2 class="section-title">菜品管理</h2>
+            <div class="input-group">
+                <div class="input-row">
+                    <input type="text" 
+                           id="new-category" 
+                           class="text-input"
+                           placeholder="输入新分类名称">
+                    <button id="add-category-button" class="action-button">
+                        添加分类
+                    </button>
+                </div>
+                <div class="input-row">
+                    <input type="text" 
+                           id="new-food" 
+                           class="text-input"
+                           placeholder="输入新菜品名称">
+                    <button id="add-food-button" class="action-button">
+                        添加菜品
+                    </button>
+                </div>
+            </div>
+            <div id="food-items" class="category-container"></div>
+        </section>
 
-    <!-- 菜品管理区 -->
-    <div class="management-panel">
-      <div class="category-control">
-        <div class="input-group">
-          <input type="text" 
-                 id="new-category" 
-                 placeholder="输入分类名称..."
-                 class="input-field">
-          <button id="add-category-button" class="action-btn">➕ 添加分类</button>
-        </div>
-      </div>
+        <section class="roulette-section">
+            <h2 class="section-title">幸运大转盘</h2>
+            <div class="roulette-wrapper">
+                <canvas id="roulette-wheel" width="400" height="400"></canvas>
+                <div id="pointer" class="roulette-pointer"></div>
+            </div>
+            <button id="spin-button" class="spin-button">
+                开始旋转
+            </button>
+        </section>
+    </main>
 
-      <div class="food-control">
-        <div class="input-group">
-          <input type="text" 
-                 id="new-food" 
-                 placeholder="输入菜品名称..."
-                 class="input-field">
-          <button id="add-food-button" class="action-btn">🍲 添加菜品</button>
-        </div>
-      </div>
-
-      <div id="food-items" class="food-list-container"></div>
-    </div>
-
-    <!-- 转盘区 -->
-    <div class="roulette-panel">
-      <div class="roulette-container">
-        <canvas id="roulette-wheel" width="400" height="400"></canvas>
-        <div id="pointer" class="roulette-pointer"></div>
-      </div>
-      <button id="spin-button" class="spin-btn">🎮 开始旋转</button>
-    </div>
-  </div>
-
-  <script src="/js/food-roulette.js"></script>
+    <script src="/js/food-roulette.js"></script>
 </body>
 </html>
