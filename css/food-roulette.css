@@ -8,7 +8,7 @@ body {
   
   /* 新增背景样式 */
   background: 
-      linear-gradient(rgba(248, 249, 250, 0.85), rgba(248, 249, 250, 0.85)),
+      linear-gradient(rgba(248, 249, 250, 0.35), rgba(248, 249, 250, 0.35)),
       url('/images/iWen1.jpg') center/cover fixed;
   min-height: 100vh;
 }
