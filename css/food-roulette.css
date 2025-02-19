@@ -47,7 +47,7 @@ body::before {
   text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
   
   /* 新增标题遮罩 */
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.1);
   display: inline-block;
   padding: 0.5rem 2rem;
   border-radius: 50px;
@@ -307,12 +307,15 @@ body::before {
   body {
     padding: 1rem;
     background-attachment: scroll;
-    background-image: url('/images/iWen1.jpg');
+    background-image: 
+        linear-gradient(rgba(248, 249, 250, 0.35), rgba(248, 249, 250, 0.35))
+        url('/images/iWen1.jpg') center/cover fixed;
+        
   }
 
   .container {
       padding: 1rem;
-      background: rgba(255, 255, 255, 0.95);
+      background: rgba(255, 255, 255, 0.35);
   }
 
   .title {
