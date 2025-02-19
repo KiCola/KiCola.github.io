@@ -100,6 +100,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             if (food) {
                 food.weight = Math.max(1, parseInt(input.value) || 1);
+                renderFoodList();
                 updateRoulette();
             }
         }
@@ -114,6 +115,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             if (food) {
                 food.color = input.value;
+                renderFoodList();
                 updateRoulette();
             }
         }
@@ -133,6 +135,7 @@ function handleCheckboxChange(e) {
             if (found) {
                 targetFood = found;
                 targetCategory = category;
+                
             }
         });
 
@@ -141,6 +144,7 @@ function handleCheckboxChange(e) {
             targetFood.checked = e.target.checked;
             
             // 立即更新转盘
+            renderFoodList();
             updateRoulette();
             
             // 更新列表项样式（需要找到对应的DOM元素）
@@ -257,8 +261,6 @@ function handleCheckboxChange(e) {
     }
 
     function updateRoulette() {
-
-
         try {
             const allFoods = state.foodCategories
             .flatMap(mc => mc.subCategories)
