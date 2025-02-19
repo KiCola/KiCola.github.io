@@ -47,11 +47,26 @@ document.addEventListener('DOMContentLoaded', function () {
     };
 
     // ==================== 事件监听 ====================
-    dom.foodItems.addEventListener('change', handleCategoryChange);
+    dom.foodItems.addEventListener('change', function(e) {
+        if (e.target.matches('.main-category-radio')) {
+            handleMainCategoryChange(e);
+        }
+        else if (e.target.matches('.sub-category-radio')) {
+            handleSubCategoryChange(e);
+        }
+        else if (e.target.matches('.food-checkbox')) {
+            handleCheckboxChange(e);
+        }
+        else if (e.target.matches('.weight-input')) {
+            handleWeightChange(e);
+        }
+        else if (e.target.matches('.color-input')) {
+            handleColorChange(e);
+        }
+    });
+
     dom.foodItems.addEventListener('click', handleDeleteFood);
-    dom.foodItems.addEventListener('change', handleWeightChange);
-    dom.foodItems.addEventListener('change', handleColorChange);
-    dom.foodItems.addEventListener('change', handleCheckboxChange);
+
     
     dom.addMainCategoryBtn.addEventListener('click', addMainCategory);
     dom.addSubCategoryBtn.addEventListener('click', addSubCategory);
@@ -63,15 +78,17 @@ document.addEventListener('DOMContentLoaded', function () {
     updateRoulette();
 
     // ==================== 事件处理器 ====================
-    function handleCategoryChange(e) {
-        if (e.target.matches('.main-category-radio')) {
-            state.selectedMainCategory = e.target.value;
-            state.selectedSubCategory = null;
-            renderFoodList();
-        }
-        if (e.target.matches('.sub-category-radio')) {
-            state.selectedSubCategory = e.target.value;
-        }
+    function handleMainCategoryChange(e) {
+        state.selectedMainCategory = e.target.value;
+        state.selectedSubCategory = null;
+        renderFoodList();
+        updateRoulette();
+    }
+
+    // 新增：处理子分类选择
+    function handleSubCategoryChange(e) {
+        state.selectedSubCategory = e.target.value;
+        renderFoodList();
     }
 
 
@@ -121,40 +138,24 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // 修改复选框事件处理逻辑
-function handleCheckboxChange(e) {
-    if (e.target.matches('.food-checkbox')) {
+    // 修改：完善复选框状态处理
+    function handleCheckboxChange(e) {
         const foodName = e.target.value;
+        const checked = e.target.checked;
+        
         // 遍历所有分类找到对应菜品
-        let targetFood = null;
-        let targetCategory = null;
-
-        // 新增：遍历所有分类
-        state.foodCategories.forEach(category => {
-            const found = category.foods.find(f => f.name === foodName);
-            if (found) {
-                targetFood = found;
-                targetCategory = category;
-                
-            }
+        state.foodCategories.forEach(mainCat => {
+            mainCat.subCategories.forEach(subCat => {
+                const food = subCat.foods.find(f => f.name === foodName);
+                if (food) {
+                    food.checked = checked;
+                }
+            });
         });
 
-        if (targetFood) {
-            // 更新菜品选中状态
-            targetFood.checked = e.target.checked;
-            
-            // 立即更新转盘
-            renderFoodList();
-            updateRoulette();
-            
-            // 更新列表项样式（需要找到对应的DOM元素）
-            const li = e.target.closest('li');
-            if (li) {
-                updateFoodItemStyle(li, targetFood.checked);
-            }
-        }
+        updateRoulette();
+        updateFoodItemStyle(e.target.closest('li'), checked);
     }
-}
 
     // ==================== 核心功能 ====================
     function addMainCategory() {
@@ -262,10 +263,11 @@ function handleCheckboxChange(e) {
 
     function updateRoulette() {
         try {
+            // 获取所有选中菜品（三级结构遍历）
             const allFoods = state.foodCategories
-            .flatMap(mc => mc.subCategories)
-            .flatMap(sc => sc.foods)
-            .filter(f => f.checked && f.weight > 0);
+                .flatMap(mainCat => mainCat.subCategories)
+                .flatMap(subCat => subCat.foods)
+                .filter(f => f.checked && f.weight > 0); // 关键修改：只保留checked为true的菜品
 
             if (allFoods.length === 0) {
                 showEmptyState();
@@ -399,11 +401,12 @@ function handleCheckboxChange(e) {
 
     function updateFoodItemStyle(liElement, isChecked) {
         liElement.dataset.checked = isChecked;
-        const secondaryElements = liElement.querySelectorAll('.weight-input, .color-input');
-        secondaryElements.forEach(el => {
-            el.style.opacity = isChecked ? '1' : '0.5';
-            el.style.pointerEvents = isChecked ? 'auto' : 'none';
+        const controls = liElement.querySelectorAll('.weight-input, .color-input');
+        controls.forEach(control => {
+            control.disabled = !isChecked;
+            control.style.opacity = isChecked ? 1 : 0.5;
         });
+        liElement.style.opacity = isChecked ? 1 : 0.6;
     }
 
     function showEmptyState() {
