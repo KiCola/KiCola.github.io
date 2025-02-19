@@ -257,15 +257,13 @@ function handleCheckboxChange(e) {
     }
 
     function updateRoulette() {
-        const allFoods = state.foodCategories
-            .flatMap(mc => mc.subCategories)
-            .flatMap(sc => sc.foods)
-            .filter(f => f.checked && f.weight > 0);
+
 
         try {
             const allFoods = state.foodCategories
-                .flatMap(c => c.foods)
-                .filter(f => f.checked && f.weight > 0);
+            .flatMap(mc => mc.subCategories)
+            .flatMap(sc => sc.foods)
+            .filter(f => f.checked && f.weight > 0);
 
             if (allFoods.length === 0) {
                 showEmptyState();
