@@ -13,19 +13,6 @@ body {
   min-height: 100vh;
 }
 
-/* 新增加载动画 */
-body::after {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: #f8f9fa;
-  z-index: 9999;
-  animation: fadeOut 1s forwards;
-}
-
 .container {
   max-width: 1200px;
   margin: 0 auto;
