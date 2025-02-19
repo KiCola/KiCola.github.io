@@ -14,19 +14,41 @@
         <section class="food-management">
             <h2 class="section-title">菜品管理</h2>
             <div class="input-group">
+                <!-- 主分类输入行 -->
                 <div class="input-row">
-                    <input type="text" id="new-main-category" placeholder="输入主分类名称">
-                    <button id="add-main-category-button" class="action-button">添加主分类</button>
+                    <input type="text" 
+                           id="new-main-category" 
+                           class="text-input"
+                           placeholder="输入主分类名称">
+                    <button id="add-main-category-button" class="action-button">
+                        添加主分类
+                    </button>
                 </div>
+                
+                <!-- 子分类输入行 -->
                 <div class="input-row">
-                    <input type="text" id="new-sub-category" placeholder="输入子分类名称">
-                    <button id="add-sub-category-button" class="action-button">添加子分类</button>
+                    <input type="text" 
+                           id="new-sub-category" 
+                           class="text-input"
+                           placeholder="输入子分类名称">
+                    <button id="add-sub-category-button" class="action-button">
+                        添加子分类
+                    </button>
                 </div>
+                
+                <!-- 菜品输入行 -->
                 <div class="input-row">
-                    <input type="text" id="new-food" placeholder="输入菜品名称">
-                    <button id="add-food-button" class="action-button">添加菜品</button>
+                    <input type="text" 
+                           id="new-food" 
+                           class="text-input"
+                           placeholder="输入菜品名称">
+                    <button id="add-food-button" class="action-button">
+                        添加菜品
+                    </button>
                 </div>
             </div>
+            
+            <!-- 分类容器 -->
             <div id="food-items" class="category-container"></div>
         </section>
 
