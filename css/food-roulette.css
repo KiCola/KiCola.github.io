@@ -31,7 +31,7 @@ body::before {
   margin: 0 auto;
   
   /* 新增容器遮罩 */
-  background: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   border-radius: 12px;
