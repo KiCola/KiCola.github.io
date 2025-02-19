@@ -64,7 +64,7 @@ body::before {
 
 /* 输入区域 */
 .input-group {
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.4);
   padding: 1.5rem;
   border-radius: 12px;
   box-shadow: 0 4px 6px rgba(0,0,0,0.05);
@@ -111,7 +111,7 @@ body::before {
 
 /* 分类管理 */
 .category-container {
-  background: white;
+  background: rgba(255,255,255,0.4);
   border-radius: 12px;
   padding: 1.5rem;
   box-shadow: 0 4px 6px rgba(0,0,0,0.05);
