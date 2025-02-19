@@ -14,7 +14,7 @@ body {
 }
 
 /* 新增加载动画 */
-body::before {
+body::after {
   content: '';
   position: fixed;
   top: 0;
@@ -315,7 +315,7 @@ body::before {
 
   .container {
       padding: 1rem;
-      background: rgba(255, 255, 255, 0.35);
+      background: rgba(255, 255, 255, 0.1);
   }
 
   .title {
@@ -326,6 +326,7 @@ body::before {
 
   .input-group {
       padding: 1rem;
+      background: rgba(255, 255, 255, 0.4);
   }
 
   .input-row {
