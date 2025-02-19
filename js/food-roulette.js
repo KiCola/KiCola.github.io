@@ -3,8 +3,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const dom = {
         foodItems: document.getElementById('food-items'),
         addMainCategoryBtn: document.getElementById('add-main-category-button'),
-        addSubCategoryBtn: document.getElementById('add-sub-category-button'),
         newMainCategory: document.getElementById('new-main-category'),
+        addSubCategoryBtn: document.getElementById('add-sub-category-button'),
         newSubCategory: document.getElementById('new-sub-category'),
         addFoodBtn: document.getElementById('add-food-button'),
         newFood: document.getElementById('new-food'),
@@ -14,11 +14,15 @@ document.addEventListener('DOMContentLoaded', function () {
         pointer: document.getElementById('pointer')
     };
 
+
     // ==================== 状态验证 ====================
-    const requiredElements = ['foodItems', 'addMainCategoryBtn', 'addSubCategoryBtn', 'addFoodBtn', 'spinBtn', 'canvas', 'pointer'];
+    const requiredElements = [
+        'foodItems', 'addMainCategoryBtn', 'addSubCategoryBtn',
+        'addFoodBtn', 'spinBtn', 'canvas', 'pointer'
+    ];
     requiredElements.forEach(key => {
         if (!dom[key]) {
-            console.error(`关键元素 ${key} 未找到`, dom[key]);
+            console.error(`关键元素 ${key} 未找到`);
             throw new Error(`页面初始化失败：${key} 元素缺失`);
         }
     });
@@ -38,10 +42,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 ]
             }
         ],
-        selectedMainCategory: null,
-        selectedSubCategory: null,
-        segments: [],
-        isSpinning: false
+        selectedMainCategory: "校外",
+        selectedSubCategory: "韵酒"
     };
 
     // ==================== 事件监听 ====================
@@ -57,7 +59,6 @@ document.addEventListener('DOMContentLoaded', function () {
     dom.spinBtn.addEventListener('click', startSpin);
 
     // ==================== 初始化 ====================
-    state.selectedCategory = state.foodCategories[0]?.name;
     renderFoodList();
     updateRoulette();
 
@@ -66,20 +67,24 @@ document.addEventListener('DOMContentLoaded', function () {
         if (e.target.matches('.main-category-radio')) {
             state.selectedMainCategory = e.target.value;
             state.selectedSubCategory = null;
+            renderFoodList();
         }
         if (e.target.matches('.sub-category-radio')) {
             state.selectedSubCategory = e.target.value;
         }
     }
 
+
     function handleDeleteFood(e) {
         if (e.target.matches('.delete-button')) {
             const li = e.target.closest('li');
             const foodName = li.querySelector('.food-checkbox').value;
-            const category = state.foodCategories.find(c => c.name === state.selectedCategory);
             
-            if (category) {
-                category.foods = category.foods.filter(f => f.name !== foodName);
+            const mainCat = state.foodCategories.find(c => c.name === state.selectedMainCategory);
+            const subCat = mainCat?.subCategories.find(s => s.name === state.selectedSubCategory);
+            
+            if (subCat) {
+                subCat.foods = subCat.foods.filter(f => f.name !== foodName);
                 renderFoodList();
                 updateRoulette();
             }
@@ -155,7 +160,7 @@ function handleCheckboxChange(e) {
         if (!state.foodCategories.some(c => c.name === categoryName)) {
             state.foodCategories.push({
                 name: categoryName,
-                foods: []
+                subCategories: []
             });
             dom.newMainCategory.value = '';
             renderFoodList();
@@ -165,12 +170,16 @@ function handleCheckboxChange(e) {
     function addSubCategory() {
         const categoryName = dom.newSubCategory.value.trim();
         const mainCategory = state.foodCategories.find(c => c.name === state.selectedMainCategory);
-        if (mainCategory) {
-            mainCategory.subCategories.push({
-                name: categoryName,
-                foods: []
-            });
-            renderFoodList();
+        
+        if (mainCategory && categoryName) {
+            if (!mainCategory.subCategories.some(s => s.name === categoryName)) {
+                mainCategory.subCategories.push({
+                    name: categoryName,
+                    foods: []
+                });
+                dom.newSubCategory.value = '';
+                renderFoodList();
+            }
         }
     }
 
@@ -179,15 +188,18 @@ function handleCheckboxChange(e) {
         const mainCategory = state.foodCategories.find(c => c.name === state.selectedMainCategory);
         const subCategory = mainCategory?.subCategories.find(s => s.name === state.selectedSubCategory);
         
-        if (subCategory) {
-            subCategory.foods.push({
-                name: foodName,
-                weight: 1,
-                color: getRandomColor(),
-                checked: true
-            });
-            renderFoodList();
-            updateRoulette();
+        if (subCategory && foodName) {
+            if (!subCategory.foods.some(f => f.name === foodName)) {
+                subCategory.foods.push({
+                    name: foodName,
+                    weight: 1,
+                    color: getRandomColor(),
+                    checked: true
+                });
+                dom.newFood.value = '';
+                renderFoodList();
+                updateRoulette();
+            }
         }
     }
 
@@ -217,7 +229,24 @@ function handleCheckboxChange(e) {
                         <ul class="food-list">
                             ${subCat.foods.map(food => `
                                 <li class="food-item" data-checked="${food.checked}">
-                                    <!-- 原有菜品项保持不变 -->
+                                    <label class="food-label">
+                                        <input 
+                                            type="checkbox" 
+                                            class="food-checkbox"
+                                            value="${food.name}" 
+                                            ${food.checked ? 'checked' : ''}>
+                                        <span class="food-name">${food.name}</span>
+                                        <input 
+                                            type="number" 
+                                            class="weight-input"
+                                            value="${food.weight}" 
+                                            min="1">
+                                        <input 
+                                            type="color" 
+                                            class="color-input"
+                                            value="${food.color}">
+                                    </label>
+                                    <button class="delete-button">×</button>
                                 </li>
                             `).join('')}
                         </ul>
@@ -228,6 +257,11 @@ function handleCheckboxChange(e) {
     }
 
     function updateRoulette() {
+        const allFoods = state.foodCategories
+            .flatMap(mc => mc.subCategories)
+            .flatMap(sc => sc.foods)
+            .filter(f => f.checked && f.weight > 0);
+
         try {
             const allFoods = state.foodCategories
                 .flatMap(c => c.foods)
@@ -262,6 +296,10 @@ function handleCheckboxChange(e) {
             console.error('转盘更新失败:', error);
             showErrorState();
         }
+    }
+
+    function getRandomColor() {
+        return `hsl(${Math.random() * 360}, 70%, 50%)`;
     }
 
     function drawRoulette() {
