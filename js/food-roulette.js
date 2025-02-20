@@ -304,41 +304,134 @@ document.addEventListener('DOMContentLoaded', function () {
         return `hsl(${Math.random() * 360}, 70%, 50%)`;
     }
 
+// ==================== 转盘绘制逻辑 ====================
     function drawRoulette() {
         const { ctx, canvas } = dom;
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+        const radius = canvas.width / 2 - 10;
+
+        // 1. 清空画布
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        // 清除空状态
-        canvas.classList.remove('roulette-empty');
+        // 2. 检查空状态
+        if (state.segments.length === 0) {
+            showEmptyState();
+            return;
+        }
 
-        state.segments.forEach(segment => {
-            const startAngle = segment.startAngle * Math.PI / 180;
-            const endAngle = segment.endAngle * Math.PI / 180;
+        // 3. 绘制所有扇形
+        state.segments.forEach((segment, index) => {
+            // 3.1 计算起止角度（转换为弧度）
+            const startAngle = (segment.startAngle - 90) * Math.PI / 180;
+            const endAngle = (segment.endAngle - 90) * Math.PI / 180;
 
-            // 创建渐变
-            const gradient = ctx.createRadialGradient(200, 200, 0, 200, 200, 200);
-            gradient.addColorStop(0, segment.color);
-            gradient.addColorStop(1, darkenColor(segment.color, 0.3));
+            // 3.2 创建渐变效果
+            const gradient = ctx.createRadialGradient(
+                centerX, centerY, 0,
+                centerX, centerY, radius
+            );
+            gradient.addColorStop(0, lightenColor(segment.color, 0.2));
+            gradient.addColorStop(1, segment.color);
 
-            // 绘制扇形
+            // 3.3 绘制扇形
             ctx.beginPath();
-            ctx.moveTo(200, 200);
-            ctx.arc(200, 200, 200, startAngle, endAngle);
+            ctx.moveTo(centerX, centerY);
+            ctx.arc(centerX, centerY, radius, startAngle, endAngle);
             ctx.closePath();
             ctx.fillStyle = gradient;
             ctx.fill();
+
+            // 3.4 绘制分隔线
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+            ctx.lineWidth = 2;
             ctx.stroke();
 
-            // 绘制文字
-            ctx.save();
-            ctx.translate(200, 200);
-            ctx.rotate((startAngle + endAngle) / 2);
-            ctx.fillStyle = '#fff';
-            ctx.font = '14px Arial';
-            ctx.textAlign = 'center';
-            ctx.fillText(segment.name, 140, 5);
-            ctx.restore();
+            // 3.5 绘制文字
+            drawSegmentText(segment, startAngle, endAngle);
         });
+
+        // 4. 绘制中心圆
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius * 0.1, 0, Math.PI * 2);
+        ctx.fillStyle = '#ffffff';
+        ctx.strokeStyle = '#e74c3c';
+        ctx.lineWidth = 4;
+        ctx.fill();
+        ctx.stroke();
+    }
+
+    // ==================== 文字绘制辅助函数 ====================
+    function drawSegmentText(segment, startAngle, endAngle) {
+        const { ctx, canvas } = dom;
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+        const textRadius = canvas.width * 0.35;
+
+        // 1. 计算文字角度
+        const middleAngle = (startAngle + endAngle) / 2;
+
+        // 2. 文字定位计算
+        const textX = centerX + Math.cos(middleAngle) * textRadius;
+        const textY = centerY + Math.sin(middleAngle) * textRadius;
+
+        // 3. 文字旋转适配
+        ctx.save();
+        ctx.translate(textX, textY);
+        ctx.rotate(middleAngle + Math.PI/2); // 保持文字正向
+
+        // 4. 文字样式配置
+        ctx.fillStyle = getContrastColor(segment.color);
+        ctx.font = `${canvas.width / 25}px 'Microsoft YaHei'`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+
+        // 5. 自动换行处理
+        wrapText(segment.name, 0, 0, canvas.width/5, ctx.font);
+
+        ctx.restore();
+    }
+
+    // ==================== 文字换行算法 ====================
+    function wrapText(text, x, y, maxWidth, fontStyle) {
+        const { ctx } = dom;
+        const words = text.split('');
+        let line = '';
+        const lineHeight = parseInt(fontStyle) * 1.2;
+
+        for (let n = 0; n < words.length; n++) {
+            const testLine = line + words[n];
+            const metrics = ctx.measureText(testLine);
+            if (metrics.width > maxWidth && n > 0) {
+                ctx.fillText(line, x, y);
+                line = words[n];
+                y += lineHeight;
+            } else {
+                line = testLine;
+            }
+        }
+        ctx.fillText(line, x, y);
+    }
+
+    // ==================== 颜色工具函数 ====================
+    // 生成对比色
+    function getContrastColor(hex) {
+        const r = parseInt(hex.substr(1,2)), 
+            g = parseInt(hex.substr(3,2)),
+            b = parseInt(hex.substr(5,2));
+        return (r * 0.299 + g * 0.587 + b * 0.114) > 186 
+            ? '#000000' 
+            : '#ffffff';
+    }
+
+    // 颜色增亮
+    function lightenColor(hex, percent) {
+        const num = parseInt(hex.replace('#',''), 16),
+            amt = Math.round(2.55 * percent * 255),
+            R = (num >> 16) + amt,
+            G = (num >> 8 & 0x00FF) + amt,
+            B = (num & 0x0000FF) + amt;
+        return `#${(1 << 24 | (R<255?R:255) << 16 | (G<255?G:255) << 8 | (B<255?B:255)).toString(16).slice(1)}`;
     }
 
     function startSpin() {
