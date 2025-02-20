@@ -359,6 +359,19 @@ document.addEventListener('DOMContentLoaded', function () {
         ctx.lineWidth = 4;
         ctx.fill();
         ctx.stroke();
+
+        ctx.beginPath();
+        ctx.moveTo(centerX, centerY);
+        ctx.lineTo(centerX, centerY - radius + 20); // 指针长度
+        ctx.strokeStyle = '#e74c3c';
+        ctx.lineWidth = 4;
+        ctx.stroke();
+        
+        // 指针箭头
+        ctx.beginPath();
+        ctx.arc(centerX, centerY - radius + 15, 8, 0, Math.PI*2);
+        ctx.fillStyle = '#e74c3c';
+        ctx.fill();
     }
 
     // ==================== 文字绘制辅助函数 ====================
@@ -434,51 +447,55 @@ document.addEventListener('DOMContentLoaded', function () {
         return `#${(1 << 24 | (R<255?R:255) << 16 | (G<255?G:255) << 8 | (B<255?B:255)).toString(16).slice(1)}`;
     }
 
-    function startSpin() {
-        if (state.isSpinning || state.segments.length === 0) return;
+function startSpin() {
+    if (state.isSpinning || state.segments.length === 0) return;
+    
+    state.isSpinning = true;
+    const spinDuration = 3000;
+    const baseRotation = 360 * 5; // 基础旋转圈数
+    const targetRotation = baseRotation + 360 - (currentRotation % 360); // 保证停在完整位置
+    
+    let startRotation = 0;
+    const startTime = Date.now();
+    
+    function animate() {
+        const progress = Date.now() - startTime;
+        const percentage = Math.min(progress / spinDuration, 1);
         
-        state.isSpinning = true;
-        const spinDuration = 3000;
-        const baseRotation = 360 * 5;
-        const targetRotation = baseRotation + Math.random() * 360;
+        // 使用缓动函数增强效果
+        const easedPercentage = 1 - Math.pow(1 - percentage, 4);
+        const currentRotation = startRotation + (targetRotation * easedPercentage);
         
-        dom.canvas.style.transform = 'rotate(0deg)';
-        const startTime = Date.now();
+        dom.canvas.style.transform = `rotate(${currentRotation}deg)`;
         
-        function animate() {
-            const progress = Date.now() - startTime;
-            const percentage = Math.min(progress / spinDuration, 1);
-            const currentRotation = targetRotation * percentage;
+        if (percentage < 1) {
+            requestAnimationFrame(animate);
+        } else {
+            // 计算最终角度（标准化到0-360）
+            const finalAngle = (360 - (currentRotation % 360)) % 360;
             
-            dom.canvas.style.transform = `rotate(${currentRotation}deg)`;
+            // 找到包含最终角度的扇区
+            const winningSegment = state.segments.find(s => 
+                finalAngle >= s.startAngle && 
+                finalAngle < s.endAngle
+            );
             
-            if (percentage < 1) {
-                requestAnimationFrame(animate);
-            } else {
-                const finalRotation = (targetRotation % 360 + 360) % 360;
-                const winningSegment = state.segments.find(s => 
-                    finalRotation >= s.startAngle && 
-                    finalRotation < s.endAngle
-                );
-                
+            // 添加延迟保证动画完成
+            setTimeout(() => {
                 if (winningSegment) {
-                    const centerAngle = (winningSegment.startAngle + winningSegment.endAngle) / 2;
-                    dom.pointer.style.transform = `translate(-50%, -100%) rotate(${centerAngle}deg)`;
-                    
-                    dom.canvas.classList.add('result-highlight');
-                    setTimeout(() => {
-                        dom.canvas.classList.remove('result-highlight');
-                    }, 1000);
-                    
-                    alert(`恭喜你选中了：${winningSegment.name}`);
+                    alert(`最终结果：${winningSegment.name}`);
                 }
-                
                 state.isSpinning = false;
-            }
+            }, 300);
         }
-        
-        requestAnimationFrame(animate);
     }
+    
+    // 获取当前旋转角度
+    const computedStyle = window.getComputedStyle(dom.canvas);
+    startRotation = parseFloat(computedStyle.transform.split(',')[3] || 0);
+    
+    requestAnimationFrame(animate);
+}
 
     // ==================== 工具函数 ====================
     function getRandomColor() {
